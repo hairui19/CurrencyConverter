@@ -7,10 +7,7 @@
 //
 
 import Foundation
-import ObjectMapper
 
-struct CurrencySymbolsModel : ImmutableMappable {
-    init(map: Map) throws {
-        
-    }
+struct currencySymbolModel {
+    
 }
