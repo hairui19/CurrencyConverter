@@ -69,9 +69,7 @@ class CurrencyListViewModel : ViewModelType{
             if let _ = realm.object(ofType: DisplayCurrencyRealmModel.self, forPrimaryKey: model.countryFullName){
                 return true
             }
-            let currencyName = model.currencyName
-            let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName)
-            let displayRatesModel = DisplayCurrencyRealmModel(countryName: model.countryFullName, rate: latestRatesModel!.currencyRate)
+            let displayRatesModel = DisplayCurrencyRealmModel(countryName: model.countryFullName, currencyName: model.currencyName)
             try! realm.write {
                 DisplayCurrenciesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList.append(displayRatesModel)
             }
@@ -81,13 +79,10 @@ class CurrencyListViewModel : ViewModelType{
         let completedConfiguringBaseCurrency = input.configureBaseCurrency.map { (arg) -> Bool in
             let currencyModel = arg.0
             let baseCurrency = arg.1
-            
             let realm = try! Realm()
-            let currencyName = currencyModel.currencyName
-            let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName)
             try! realm.write {
                 baseCurrency.countryName = currencyModel.countryFullName
-                baseCurrency.rate = latestRatesModel!.currencyRate
+                baseCurrency.currencyName = currencyModel.currencyName
                 baseCurrency.amount = 1
             }
             return true

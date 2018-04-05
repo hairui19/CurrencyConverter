@@ -14,20 +14,28 @@ class DisplayCurrencyRealmModel : Object, DisplayCurrencyType{
 
     // MARK: - Properties
     @objc dynamic var countryName : String = ""
-    @objc dynamic var rate : Double = 0
+    @objc dynamic var currencyName : String = ""
     @objc dynamic var amount : Double = 0
     @objc dynamic var comparingRate : Double = 0
     @objc dynamic var comparingAmount : Double = 0
+    
+    var rate : Double{
+        let realm = try! Realm()
+        if let latestRates = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName){
+            return latestRates.currencyRate
+        }
+        return 0
+    }
     
     var displayAmount : String{
         return "\(rate)"
     }
     
     // MARK: - Init
-    convenience init(countryName: String, rate : Double) {
+    convenience init(countryName: String, currencyName : String) {
         self.init()
         self.countryName = countryName
-        self.rate = rate
+        self.currencyName = currencyName
     }
     
     // MARK: - Functions

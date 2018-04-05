@@ -9,7 +9,5 @@
 import Foundation
 
 protocol DisplayCurrencyType{
-    var countryName : String {get set}
-    var amount : Double {get set}
-    var rate : Double {get set}
+    var currencyName : String {get set}
 }

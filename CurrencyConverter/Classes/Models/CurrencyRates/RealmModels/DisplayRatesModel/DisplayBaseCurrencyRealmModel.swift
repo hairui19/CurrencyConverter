@@ -10,11 +10,20 @@ import Foundation
 import RealmSwift
 
 class DisplayBaseCurrencyRealmModel : Object, DisplayCurrencyType{
+   
     
     // MARK: - Properties
+    @objc dynamic var key = "DisplayBaseCurrencyRealmModel.key"
+    @objc dynamic var currencyName : String = ""
     @objc dynamic var countryName : String = ""
-    @objc dynamic var rate : Double = 0
     @objc dynamic var amount : Double = 0
+    var rate : Double{
+        let realm = try! Realm()
+        if let latestRates = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName){
+            return latestRates.currencyRate
+        }
+        return 0
+    }
     
     private var currencyFormatter : NumberFormatter = {
         let formatter = NumberFormatter()
@@ -25,10 +34,16 @@ class DisplayBaseCurrencyRealmModel : Object, DisplayCurrencyType{
     var displayAmount : String{
         return currencyFormatter.string(from: NSNumber(value: amount)) ?? "$0"
     }
-    
-    @objc dynamic var key = "DisplayBaseCurrencyRealmModel.key"
     static var conveniencePrimaryKey = "DisplayBaseCurrencyRealmModel.key"
     let orderedDisplayRateList = List<DisplayCurrencyRealmModel>()
+    
+    
+    // MARK: - Init
+    // MARK: - Init
+    convenience init(countryName: String, currencyName : String) {
+        self.init()
+        self.currencyName = currencyName
+    }
     
     // MARK: -
     override static func primaryKey() -> String? {

@@ -49,16 +49,17 @@ class MainViewModel : ViewModelType{
         let finishStoringRatesInRealm = currencyRates.map { (currencyModel) -> Bool in
             let rates = currencyModel.rates
             let realm = try! Realm()
-            let oldRatesObjects = realm.objects(LatestRatesRealmModel.self)
-            var newRatesObjects : [LatestRatesRealmModel] = []
-            for pair in rates{
-                let latestRatesModel = LatestRatesRealmModel(currencyName: pair.key, currencyRate: pair.value)
-                newRatesObjects.append(latestRatesModel)
-            }
-            
             try! realm.write {
-                realm.delete(oldRatesObjects)
-                realm.add(newRatesObjects)
+                for pair in rates{
+                    let currencyName = pair.key
+                    let rate = pair.value
+                    if let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName){
+                        latestRatesModel.currencyRate = rate
+                    }else{
+                        let latestRatesModel = LatestRatesRealmModel(currencyName: pair.key, currencyRate: pair.value)
+                        realm.add(latestRatesModel)
+                    }
+                }
             }
             return false
         }
