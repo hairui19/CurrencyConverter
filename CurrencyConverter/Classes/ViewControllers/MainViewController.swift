@@ -77,6 +77,11 @@ extension MainViewController{
             .subscribe(onNext: { [weak self] (_) in
                 if let strongSelf = self{
                     strongSelf.tableView.isEditing = !strongSelf.tableView.isEditing
+                    if strongSelf.tableView.isEditing{
+                        strongSelf.editBarButtonItem.title = "Done"
+                    }else{
+                        strongSelf.editBarButtonItem.title = "Edit"
+                    }
                 }
             })
             .disposed(by: bag)
