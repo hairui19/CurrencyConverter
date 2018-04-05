@@ -21,13 +21,14 @@ class CurrencyListViewController : UIViewController{
     // MARK: - ViewModel
     private var viewModel : CurrencyListViewModel!
     private let sections = Variable<[CurrencySymbolsSectionModel]>([])
-    private let addDisplayRates = Variable<CurrencySymbolModel?>(nil)
+    private let addDisplayCurrency = Variable<CurrencySymbolModel?>(nil)
+    private let configureBaseCurrency = Variable<(CurrencySymbolModel,DisplayBaseCurrencyRealmModel)?>(nil)
     
     // MARK: - Navigations
     var closeDismiss : (()->Void)!
     
     // MARK: - ViewController Input [Optional]
-    var displayRates : DisplayCurrencyType!
+    var baseCurrency : DisplayBaseCurrencyRealmModel!
     
     // MARK: - Ect
     private let bag = DisposeBag()
@@ -115,7 +116,12 @@ extension CurrencyListViewController{
 extension CurrencyListViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = sections.value[indexPath.section].items[indexPath.row]
-        addDisplayRates.value = selectedItem
+        if let baseCurrency = baseCurrency{
+            configureBaseCurrency.value = (selectedItem, baseCurrency)
+        }else{
+            addDisplayCurrency.value = selectedItem
+        }
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -132,10 +138,13 @@ extension CurrencyListViewController{
         let searchText = searchBar.rx.text.orEmpty.asDriver().map{$0.trimmingCharacters(in:CharacterSet.whitespacesAndNewlines)}
         .distinctUntilChanged()
         viewModel = CurrencyListViewModel()
-        let input = CurrencyListViewModel.Input(searchText: searchText, addDisplayRates: addDisplayRates.asDriver().filter{$0 != nil}.map{$0!})
+        let input = CurrencyListViewModel.Input(
+            searchText: searchText,
+            addDisplayCurrency: addDisplayCurrency.asDriver().filter{$0 != nil}.map{$0!},
+            configureBaseCurrency: configureBaseCurrency.asDriver().filter{$0 != nil}.map{$0!})
         let output = viewModel.transform(input: input)
         output.currencySymbolSections.drive(sections).disposed(by: bag)
-        output.completedStoryingInRealm.drive(onNext: { [weak self] (_) in
+        output.toDismissModule.drive(onNext: { [weak self] (_) in
             self?.closeDismiss()
         })
         .disposed(by: bag)

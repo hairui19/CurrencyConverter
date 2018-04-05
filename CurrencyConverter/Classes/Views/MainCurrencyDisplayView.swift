@@ -20,6 +20,7 @@ class MainCurrencyDisplayView : UIView{
     
     private var valueLabel : UILabel = {
         let label = UILabel()
+        label.textAlignment = .right
         label.font = Fonts.get(.asap_regular, fontSize: 15)
         return label
     }()
@@ -29,6 +30,19 @@ class MainCurrencyDisplayView : UIView{
         divider.backgroundColor = UIColor(red: 240, green: 240, blue: 245)
         return divider
     }()
+    
+    
+    // MARK: - Observing Model
+    var baseCurrency : DisplayBaseCurrencyRealmModel?{
+        didSet{
+            guard let baseCurrency = baseCurrency else{
+                return
+            }
+            
+            countryLabel.text = baseCurrency.countryName
+            valueLabel.text = baseCurrency.displayAmount
+        }
+    }
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -61,13 +75,13 @@ extension MainCurrencyDisplayView{
         countryLabel.translatesAutoresizingMaskIntoConstraints = false
         countryLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
         countryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        countryLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -15).isActive = true
+        countryLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5, constant: -15).isActive = true
         
         /// ValueLabel Constraints
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         valueLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
         valueLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        valueLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -15).isActive = true
+        valueLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5, constant: -15).isActive = true
         
         /// Divider Constraints
         divider.translatesAutoresizingMaskIntoConstraints = false

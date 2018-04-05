@@ -15,6 +15,9 @@ import RxDataSources
 
 class MainViewController : UIViewController{
     
+    // MARK: - Properties
+    var baseCurrency : DisplayBaseCurrencyRealmModel!
+    
     // MARK: - IBOulets and UIs
     private var plusBarButtonItem : UIBarButtonItem!
     private var editBarButtonItem : UIBarButtonItem!
@@ -40,10 +43,27 @@ class MainViewController : UIViewController{
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadBaseCurrency()
         setupUI()
         viewModelBinding()
         UIBinding()
         setupTableView()
+    }
+}
+
+// MARK: - Load Initial Data
+extension MainViewController{
+    private func loadBaseCurrency(){
+        let realm = try! Realm()
+        baseCurrency = DisplayBaseCurrencyRealmModel.defaultCurrency(in: realm)
+        Observable.from(object: baseCurrency)
+        .filter{$0.countryName != ""}
+            .subscribe(onNext: { [weak self] (baseCurrency) in
+                self?.mainCurrencyDisplayView.baseCurrency = baseCurrency
+            })
+        .disposed(by: bag)
+        
+        let something = Observable.from(object: baseCurrency)
     }
 }
 
@@ -65,7 +85,7 @@ extension MainViewController{
     private func UIBinding(){
         (plusBarButtonItem.rx.tap)
             .subscribe(onNext: { [weak self] (_) in
-//                self?.presentCurrencyList()
+                self?.presentCurrencyList()
             })
             .disposed(by: bag)
         
@@ -86,11 +106,7 @@ extension MainViewController{
             .when(.recognized)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (_) in
-                let item = self.displayRates[0]
-                let realm = try! Realm()
-                try! realm.write {
-                    item.rate = 11111
-                }
+                self.presentCurrencyListForBaseCurrency(self.baseCurrency!)
             })
             .disposed(by: bag)
     }

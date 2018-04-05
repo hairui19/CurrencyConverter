@@ -15,12 +15,13 @@ class CurrencyListViewModel : ViewModelType{
     
     struct Input {
         let searchText : Driver<String>
-        let addDisplayRates : Driver<CurrencySymbolModel>
+        let addDisplayCurrency : Driver<CurrencySymbolModel>
+        let configureBaseCurrency : Driver<(CurrencySymbolModel,DisplayBaseCurrencyRealmModel)>
     }
     
     struct Output {
         let currencySymbolSections : Driver<[CurrencySymbolsSectionModel]>
-        let completedStoryingInRealm : Driver<Bool>
+        let toDismissModule : Driver<Bool>
     }
     
     func transform(input: CurrencyListViewModel.Input) -> CurrencyListViewModel.Output {
@@ -59,8 +60,11 @@ class CurrencyListViewModel : ViewModelType{
             .map{$0!}
         
         
-        /// Adding displayRates
-        let completedStoringInRealm = input.addDisplayRates.map { (model) -> Bool in
+        ///
+        /// For Realm, we can add realm errors, to better monitor the process
+        /// But due to time constraint, i will assume that realm will always be executed successfully
+        /// thus, we always get a "true" value returned
+        let completedStoringInRealm = input.addDisplayCurrency.map { (model) -> Bool in
             let realm = try! Realm()
             if let _ = realm.object(ofType: DisplayCurrencyRealmModel.self, forPrimaryKey: model.countryFullName){
                 return true
@@ -74,8 +78,30 @@ class CurrencyListViewModel : ViewModelType{
             return true
         }
         
-        return Output(currencySymbolSections: currencySymbolsSections,
-                      completedStoryingInRealm: completedStoringInRealm)
+        let completedConfiguringBaseCurrency = input.configureBaseCurrency.map { (arg) -> Bool in
+            let currencyModel = arg.0
+            let baseCurrency = arg.1
+            
+            let realm = try! Realm()
+            let currencyName = currencyModel.currencyName
+            let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName)
+            try! realm.write {
+                baseCurrency.countryName = currencyModel.countryFullName
+                baseCurrency.rate = latestRatesModel!.currencyRate
+                baseCurrency.amount = 1
+            }
+            return true
+        }
+        
+        let toDismissModule = Driver.from([
+                completedStoringInRealm,
+                completedConfiguringBaseCurrency
+            ])
+        .merge()
+        
+        return Output(
+            currencySymbolSections: currencySymbolsSections,
+            toDismissModule: toDismissModule)
     }
     
     

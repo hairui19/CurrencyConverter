@@ -67,6 +67,7 @@ extension MainCoordinator{
         let coordinator = CoordinatorFactory.createCurrencyListCoordinator(router: newRouter)
         self.addChildCoordinator(coordinator)
         newRouter.setRootModule(coordinator.viewController)
+        (coordinator.viewController as! CurrencyListViewController).baseCurrency = baseCurrency
         newRouter.finishedVerticalFlow = {
             [weak self, weak coordinator] in
             self?.router.dismissModule(animated: true, completion: nil)
