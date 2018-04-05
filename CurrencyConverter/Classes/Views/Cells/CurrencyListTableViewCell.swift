@@ -10,15 +10,35 @@ import UIKit
 
 class CurrencyListTableViewCell: UITableViewCell {
 
+    
+    class func reuseIdentifier() -> String { return "CurrencyListTableViewCell"}
+    
+    // MARK: - UIs & IBOulets
+    @IBOutlet weak private var countryNameLabel: UILabel!
+    @IBOutlet weak private var currencyNameLabel: UILabel!
+    
+    // MARK: - Observing Model
+    var currencySymbolModel : CurrencySymbolModel?{
+        didSet{
+            guard let currencySymbolModel = currencySymbolModel else{
+                return
+            }
+            countryNameLabel.text = currencySymbolModel.countryFullName
+            currencyNameLabel.text = currencySymbolModel.currencyName
+            
+        }
+    }
+    
+    // MARK: - View Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        countryNameLabel.text = nil
+        currencyNameLabel.text = nil
     }
     
 }

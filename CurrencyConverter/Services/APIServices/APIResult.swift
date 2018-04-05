@@ -7,3 +7,16 @@
 //
 
 import Foundation
+
+enum APIResult{
+    case apiError(APIError)
+    case apiData(Any)
+    case isLoading
+}
+
+enum APIError{
+    case generalError(title:String, message : String)
+    case statusCodeInvalid
+    case mappingError
+    case executeError
+}

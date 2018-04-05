@@ -13,11 +13,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    var appCoordinator : Coordinator!
+    //var navigationController : UINavigationController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        let appCoordinator
-        
+        // set the rootViewController
+        appCoordinator = CoordinatorFactory.getAppCoordinator()
+        window?.rootViewController = appCoordinator.router.toPresent()
+
         return true
     }
 

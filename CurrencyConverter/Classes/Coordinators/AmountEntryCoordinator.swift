@@ -7,3 +7,27 @@
 //
 
 import Foundation
+import UIKit
+
+class AmountEntryCoordinator : Coordinator{
+    
+    var childCoordinators: [Coordinator] = []
+    
+    var viewController: UIViewController
+    
+    var router: Router
+    
+    required init(router: Router, viewController: UIViewController) {
+        self.router = router
+        self.viewController = viewController
+    }
+    
+    
+    func start() {
+        
+        guard let viewController = viewController as? AmountEntryViewController else{
+            fatalError("Wrong ViewController Embedded")
+        }
+        
+    }
+}

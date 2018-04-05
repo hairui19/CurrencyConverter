@@ -8,8 +8,8 @@
 
 import UIKit
 
-class MainCoordinator : SRCoordinator{
-    var childCoordinators: [SRCoordinator] = []
+class MainCoordinator : Coordinator{
+    var childCoordinators: [Coordinator] = []
     
     var viewController: UIViewController
     
@@ -22,6 +22,50 @@ class MainCoordinator : SRCoordinator{
     
 
     func start() {
-        router.setRootModule(viewController)
+        guard let viewController = viewController as? MainViewController else{
+            fatalError("Wrong ViewController Embedded")
+        }
+    
+        viewController.presentCurrencyList = {
+            [weak self] in
+            self?.presentCurrencyList()
+        }
+        
+        viewController.presentAmountEntry = {
+            [weak self] in
+            self?.presentAmountEntry()
+        }
+        
+    }
+}
+
+// MARK: - Navigations
+extension MainCoordinator{
+    private func presentCurrencyList(){
+        let navigationController = UINavigationController()
+        let newRouter = Router(navigationController: navigationController)
+        let coordinator = CoordinatorFactory.createCurrencyListCoordinator(router: newRouter)
+        self.addChildCoordinator(coordinator)
+        newRouter.setRootModule(coordinator.viewController)
+        newRouter.finishedVerticalFlow = {
+            [weak self, weak coordinator] in
+            self?.router.dismissModule(animated: true, completion: nil)
+            self?.removeChildCoordinator(coordinator!)
+        }
+        self.router.present(newRouter, animated: true, hideNavBar: false)
+    }
+    
+    private func presentAmountEntry(){
+        let navigationController = UINavigationController()
+        let newRouter = Router(navigationController: navigationController)
+        let coordinator = CoordinatorFactory.createAmountEntryCoordinator(router: newRouter)
+        self.addChildCoordinator(coordinator)
+        newRouter.setRootModule(coordinator.viewController)
+        newRouter.finishedVerticalFlow = {
+            [weak self, weak coordinator] in
+            self?.router.dismissModule(animated: true, completion: nil)
+            self?.removeChildCoordinator(coordinator!)
+        }
+        self.router.present(newRouter, animated: true, hideNavBar: false)
     }
 }

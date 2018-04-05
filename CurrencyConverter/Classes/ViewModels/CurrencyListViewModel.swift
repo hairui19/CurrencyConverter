@@ -13,7 +13,7 @@ class CurrencyListViewModel : ViewModelType{
     
     
     struct Input {
-        
+        let searchText : Driver<String>
     }
     
     struct Output {
@@ -23,7 +23,7 @@ class CurrencyListViewModel : ViewModelType{
     func transform(input: CurrencyListViewModel.Input) -> CurrencyListViewModel.Output {
         
         let currencySymbolsService = FileReaderServiceFactory.createGetSymbolsFileReaderService()
-        let fileResult = currencySymbolsService.execute().asDriver(onErrorJustReturn: FileResult.fileError(FileReaderError.unknowError))
+        let fileResult = currencySymbolsService.execute().asDriver(onErrorJustReturn: FileResult.fileError(FileReaderError.executeError))
         
         let currencySymbols = fileResult.map { (fileResult) -> CurrencySymbolsModel? in
             switch fileResult{
@@ -33,12 +33,24 @@ class CurrencyListViewModel : ViewModelType{
                 return nil
             }
         }
-    
-        let currencySymbolsSections = currencySymbols.map { [weak self] (currencySymbolsModel) -> [CurrencySymbolsSectionModel]? in
+        
+        let currencySymbolsSections = Driver.combineLatest(
+            currencySymbols,
+            input.searchText)
+        { [weak self] (currencySymbolsModel, searchText) -> [CurrencySymbolsSectionModel]? in
             guard let currencySymbolsModel = currencySymbolsModel else{
                 return []
             }
-            return self?.generateCountryListSections(currencySymbolsDic: currencySymbolsModel.symbols)
+            var filteredDictionary : [String : String]
+            if searchText.count == 0{
+                filteredDictionary = currencySymbolsModel.symbols
+            }else{
+                filteredDictionary = currencySymbolsModel.symbols.filter({ (arg) -> Bool in
+                    return arg.value.range(of: searchText) != nil
+                })
+            }
+            
+            return self?.generateCountryListSections(currencySymbolsDic: filteredDictionary)
         }
             .filter{$0 != nil}
             .map{$0!}
@@ -54,8 +66,13 @@ class CurrencyListViewModel : ViewModelType{
         
         ///Create Section Dictionary
         /// e.g key : "A", value : [CurrencySymbolModel]
-        for pair in currencySymbolsDic{
-            let startingAlphabet = "\(pair.key[pair.key.startIndex])".uppercased()
+        /// sort the original dictionary first, so that items in section will
+        /// already in order when doing anothe sort later
+        let sortedCurrencySymbolsDic = currencySymbolsDic.sorted { (arg1, arg2) -> Bool in
+            arg1.value < arg2.value
+        }
+        for pair in sortedCurrencySymbolsDic{
+            let startingAlphabet = "\(pair.value[pair.value.startIndex])".uppercased()
             let currencySymbolModel = CurrencySymbolModel(countryFullName:pair.value ,currencyName: pair.key)
             if let _ = currencySymbolsSectionDic[startingAlphabet]{
                 currencySymbolsSectionDic[startingAlphabet]?.append(currencySymbolModel)

@@ -8,22 +8,25 @@
 
 import UIKit
 
-protocol SRCoordinator : class{
+protocol Coordinator : class{
     var router : Router {get}
-    var childCoordinators : [SRCoordinator] {get set}
+    var childCoordinators : [Coordinator] {get set}
+    var viewController : UIViewController {get}
     func start()
+    
+    init(router : Router, viewController : UIViewController) 
     
 }
 
-extension SRCoordinator{
-    func addChildCoordinator(_ childCoordinator : SRCoordinator){
+extension Coordinator{
+    func addChildCoordinator(_ childCoordinator : Coordinator){
         for element in childCoordinators {
             if element === childCoordinator { return }
         }
         self.childCoordinators.append(childCoordinator)
     }
     
-    func removeChildCoordinator(_ childCoordinator : SRCoordinator){
+    func removeChildCoordinator(_ childCoordinator : Coordinator){
         if self.childCoordinators.count == 0 {return }
         for (index, element) in childCoordinators.enumerated(){
             if element === childCoordinator{

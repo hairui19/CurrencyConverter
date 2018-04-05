@@ -23,6 +23,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="351" y="123"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="7hb-dM-sC6">
@@ -31,13 +32,79 @@
                     <view key="view" contentMode="scaleToFill" id="kmO-UZ-fJt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SMB-go-O7t">
+                                <rect key="frame" x="164" y="318" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="SMB-go-O7t" firstAttribute="centerY" secondItem="kmO-UZ-fJt" secondAttribute="centerY" id="jcQ-Ve-QNZ"/>
+                            <constraint firstItem="SMB-go-O7t" firstAttribute="centerX" secondItem="kmO-UZ-fJt" secondAttribute="centerX" id="pVn-tS-Mf3"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="lyo-TG-74I"/>
                     </view>
+                    <connections>
+                        <outlet property="dummyButton" destination="SMB-go-O7t" id="ChH-yP-E8T"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGS-xp-13Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1028" y="123"/>
+            <point key="canvasLocation" x="1177" y="123"/>
+        </scene>
+        <!--Currency List View Controller-->
+        <scene sceneID="U96-c4-NPr">
+            <objects>
+                <viewController storyboardIdentifier="CurrencyListViewController" id="kbh-rQ-sYc" customClass="CurrencyListViewController" customModule="CurrencyConverter" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EDt-N7-DRa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3bf-y5-ZWb">
+                                <rect key="frame" x="0.0" y="76" width="375" height="591"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="N3y-v1-y3R">
+                                <rect key="frame" x="0.0" y="20" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="hAI-92-e5C" firstAttribute="bottom" secondItem="3bf-y5-ZWb" secondAttribute="bottom" id="Ceq-j2-iBw"/>
+                            <constraint firstItem="N3y-v1-y3R" firstAttribute="top" secondItem="hAI-92-e5C" secondAttribute="top" id="DFa-nr-Yow"/>
+                            <constraint firstItem="3bf-y5-ZWb" firstAttribute="leading" secondItem="hAI-92-e5C" secondAttribute="leading" id="PRU-u5-J7s"/>
+                            <constraint firstItem="hAI-92-e5C" firstAttribute="trailing" secondItem="N3y-v1-y3R" secondAttribute="trailing" id="Too-44-czj"/>
+                            <constraint firstItem="N3y-v1-y3R" firstAttribute="leading" secondItem="EDt-N7-DRa" secondAttribute="leading" id="uE0-Dm-IZt"/>
+                            <constraint firstItem="hAI-92-e5C" firstAttribute="trailing" secondItem="3bf-y5-ZWb" secondAttribute="trailing" id="voO-R9-5X7"/>
+                            <constraint firstItem="3bf-y5-ZWb" firstAttribute="top" secondItem="N3y-v1-y3R" secondAttribute="bottom" id="zoA-yv-0cL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hAI-92-e5C"/>
+                    </view>
+                    <connections>
+                        <outlet property="searchBar" destination="N3y-v1-y3R" id="gtS-bq-cfb"/>
+                        <outlet property="tableView" destination="3bf-y5-ZWb" id="jf9-pe-HgS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lcX-Ku-vm2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1972" y="125.4872563718141"/>
+        </scene>
+        <!--Amount Entry View Controller-->
+        <scene sceneID="XCA-El-Coi">
+            <objects>
+                <viewController storyboardIdentifier="AmountEntryViewController" id="oLR-CL-vnB" customClass="AmountEntryViewController" customModule="CurrencyConverter" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Yde-Zn-5ig">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Bj6-h6-zTM"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vtH-ez-WeF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2788" y="125"/>
         </scene>
     </scenes>
 </document>

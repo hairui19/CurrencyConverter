@@ -7,3 +7,10 @@
 //
 
 import Foundation
+import Moya
+
+extension APIServiceEndpoints{
+    var sampleData: Data {
+        return Data()
+    }
+}

@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+enum FileReaderServiceEndPoints : String {
+    case currencySymbols = "CurrencySymbols"
+}

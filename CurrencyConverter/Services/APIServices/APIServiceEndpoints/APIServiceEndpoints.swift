@@ -10,32 +10,32 @@ import Foundation
 import Moya
 
 enum APIServiceEndpoints{
-    case getSymbols
+    case getLatestRates
+}
+
+// MARK: - Description
+extension APIServiceEndpoints : CustomStringConvertible{
+    var description: String{
+        switch self {
+        case .getLatestRates:
+            return "Get-Latest-Rates"
+        }
+    }
 }
 
 extension APIServiceEndpoints : TargetType{
-    
-    var path: String {
-        switch self {
-        case .getSymbols:
-            return "symbols"
-        }
-    }
-    
+ 
     var method: Moya.Method {
         return .post
     }
-    
-    var sampleData: Data {
-        return Data()
-    }
+
     
     var task: Task {
-        <#code#>
+        return .requestPlain
     }
     
     var headers: [String : String]? {
-        <#code#>
+        return nil
     }
     
     

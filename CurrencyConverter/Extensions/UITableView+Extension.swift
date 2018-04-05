@@ -6,4 +6,12 @@
 //  Copyright © 2018 Hairui's Organisation. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension UITableView{
+    
+    // cells registration
+    func registerCellWith(cellName : String){
+        self.register(UINib(nibName: cellName, bundle: Bundle.main), forCellReuseIdentifier: cellName)
+    }
+}

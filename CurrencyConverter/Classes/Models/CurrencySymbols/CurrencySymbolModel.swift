@@ -7,7 +7,10 @@
 //
 
 import Foundation
+import RxDataSources
 
-struct currencySymbolModel {
-    
+struct CurrencySymbolModel {
+    let countryFullName : String
+    let currencyName : String
 }
+

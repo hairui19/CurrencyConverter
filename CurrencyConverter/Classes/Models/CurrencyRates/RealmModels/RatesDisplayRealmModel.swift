@@ -7,3 +7,13 @@
 //
 
 import Foundation
+import RealmSwift
+
+class RatesDisplayRealmModel : Object{
+
+    // MARK: - Properties
+    @objc dynamic var countryName : String = ""
+    @objc dynamic var currencyRate : Double = 0
+    @objc dynamic var currentValue : Double = 0
+    
+}

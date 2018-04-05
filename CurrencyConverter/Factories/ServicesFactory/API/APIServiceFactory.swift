@@ -14,7 +14,9 @@ struct APIServiceFactory {
     
     static func createGetLatestRatesService()->APIService{
         let service = APIServiceImp(endPoint: .getLatestRates) { (data) -> Any in
-            let rates = try! Mapper<SRVerificationCodeModel>().map(JSONObject: generalAPIModel.data!)
+            let rates = try! Mapper<CurrencyRatesModel>().map(JSONObject: data)
+            return rates
         }
+        return service
     }
 }

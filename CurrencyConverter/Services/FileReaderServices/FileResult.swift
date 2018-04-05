@@ -7,3 +7,16 @@
 //
 
 import Foundation
+
+enum FileResult{
+    case fileError(FileReaderError)
+    case fileData(Any)
+    case isLoading
+}
+
+
+enum FileReaderError : Error{
+    case invalidFileName
+    case invalidData
+    case executeError
+}

@@ -9,19 +9,15 @@
 import Foundation
 import RxDataSources
 
-struct CurrencySymbolsAnimatedSectionModel {
+struct CurrencySymbolsSectionModel {
     var header : String
-    var items : [currencySymbolModel]
+    var items : [CurrencySymbolModel]
 }
 
-extension CurrencySymbolsAnimatedSectionModel : AnimatableSectionModelType{
-    typealias Item = currencySymbolModel
+extension CurrencySymbolsSectionModel : SectionModelType{
+    typealias Item = CurrencySymbolModel
     
-    var identity: String {
-        return header
-    }
-    
-    init(original: CurrencySymbolsAnimatedSectionModel, items: [Item]) {
+    init(original: CurrencySymbolsSectionModel, items: [Item]) {
         self = original
         self.items = items
     }
