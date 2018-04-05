@@ -10,24 +10,24 @@ import Foundation
 import RealmSwift
 import RxDataSources
 
-class DisplayRatesRealmModel : Object{
+class DisplayCurrencyRealmModel : Object, DisplayCurrencyType{
 
     // MARK: - Properties
     @objc dynamic var countryName : String = ""
-    @objc dynamic var ownRate : Double = 0
-    @objc dynamic var ownAmount : Double = 0
+    @objc dynamic var rate : Double = 0
+    @objc dynamic var amount : Double = 0
     @objc dynamic var comparingRate : Double = 0
     @objc dynamic var comparingAmount : Double = 0
     
-    var amount : String{
-        return "\(ownRate)"
+    var displayAmount : String{
+        return "\(rate)"
     }
     
     // MARK: - Init
-    convenience init(countryName: String, ownRate : Double) {
+    convenience init(countryName: String, rate : Double) {
         self.init()
         self.countryName = countryName
-        self.ownRate = ownRate
+        self.rate = rate
     }
     
     // MARK: - Functions
@@ -36,7 +36,7 @@ class DisplayRatesRealmModel : Object{
     }
 }
 
-extension DisplayRatesRealmModel : IdentifiableType{
+extension DisplayCurrencyRealmModel : IdentifiableType{
     var identity: String {
         return "\(countryName)"
     }

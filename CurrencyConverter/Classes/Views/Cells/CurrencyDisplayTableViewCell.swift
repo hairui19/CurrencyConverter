@@ -15,14 +15,14 @@ class CurrencyDisplayTableViewCell: UITableViewCell,CellReuseIdentifiable {
     @IBOutlet weak private var amountLabel: UILabel!
     
     // MARK: - Observing Model
-    var ratesModel : DisplayRatesRealmModel?{
+    var ratesModel : DisplayCurrencyRealmModel?{
         didSet{
             guard let ratesModel = ratesModel else{
                 return
             }
             
             countryNameLabel.text = ratesModel.countryName
-            amountLabel.text = ratesModel.amount
+            amountLabel.text = ratesModel.displayAmount
         }
     }
     

@@ -23,6 +23,7 @@ class MainViewController : UIViewController{
     
     // MARK: - Navigations
     var presentCurrencyList : (()->Void)!
+    var presentCurrencyListForBaseCurrency : ((DisplayBaseCurrencyRealmModel)->Void)!
     var presentAmountEntry : (()->Void)!
     
     // MARK: - ViewModel
@@ -30,8 +31,8 @@ class MainViewController : UIViewController{
     let loadAPI = Variable<Bool>(true)
     
     // MARK: - Display Data
-    var displayRates : List<DisplayRatesRealmModel>!
-    var displayRatesSection = Variable<[DisplayRatesAnimatedSectionModel]>([])
+    var displayRates : List<DisplayCurrencyRealmModel>!
+    var displayRatesSection = Variable<[DisplayCurrenciesAnimatedSectionModel]>([])
     
     // MARK: - Ect
     private let bag = DisposeBag()
@@ -43,11 +44,6 @@ class MainViewController : UIViewController{
         viewModelBinding()
         UIBinding()
         setupTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
     }
 }
 
@@ -69,7 +65,7 @@ extension MainViewController{
     private func UIBinding(){
         (plusBarButtonItem.rx.tap)
             .subscribe(onNext: { [weak self] (_) in
-                self?.presentCurrencyList()
+//                self?.presentCurrencyList()
             })
             .disposed(by: bag)
         
@@ -89,12 +85,14 @@ extension MainViewController{
         mainCurrencyDisplayView.rx.tapGesture()
             .when(.recognized)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (_) in
-
+            .subscribe(onNext: { [unowned self] (_) in
+                let item = self.displayRates[0]
+                let realm = try! Realm()
+                try! realm.write {
+                    item.rate = 11111
+                }
             })
             .disposed(by: bag)
-        
-        
     }
 }
 
@@ -103,7 +101,7 @@ extension MainViewController{
 extension MainViewController{
     private func viewModelBinding(){
         let realm = try! Realm()
-        displayRates = DisplayRatesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
+        displayRates = DisplayCurrenciesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
         let displayRatesObservable = Observable.array(from: displayRates).asDriver(onErrorJustReturn: [])
         
         viewModel = MainViewModel()
@@ -142,6 +140,7 @@ extension MainViewController{
         })
         .disposed(by: bag)
         
+        /// Move Items
         tableView.rx.itemMoved.subscribe(onNext: { (sourceIndexPath, destinationIndexPath) in
             let realm = try! Realm()
             try! realm.write {
@@ -152,8 +151,8 @@ extension MainViewController{
         
     }
     
-    private func dataSource()->RxTableViewSectionedAnimatedDataSource<DisplayRatesAnimatedSectionModel>{
-        return RxTableViewSectionedAnimatedDataSource<DisplayRatesAnimatedSectionModel>(
+    private func dataSource()->RxTableViewSectionedAnimatedDataSource<DisplayCurrenciesAnimatedSectionModel>{
+        return RxTableViewSectionedAnimatedDataSource<DisplayCurrenciesAnimatedSectionModel>(
             animationConfiguration: AnimationConfiguration(insertAnimation: .fade,
                                                            reloadAnimation: .fade),
             configureCell: {dataSource, tableView, indexPath, item in
@@ -169,8 +168,6 @@ extension MainViewController{
         }
         )
     }
-    
-    
 }
 
 // MARK: - TableView Delegate

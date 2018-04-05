@@ -29,8 +29,10 @@ struct CoordinatorFactory {
     }
     
     
-    static func createCurrencyListCoordinator(router : Router)->Coordinator{
-        let currencyViewController = ViewControllers.countriesList_storyboard_main.get
+    static func createCurrencyListCoordinator(
+        router : Router
+        )->Coordinator{
+        let currencyViewController = ViewControllers.countriesList_storyboard_main.get as! CurrencyListViewController
         let coordinator = CurrencyListCoordinator(router: router, viewController: currencyViewController)
         coordinator.start()
         return coordinator

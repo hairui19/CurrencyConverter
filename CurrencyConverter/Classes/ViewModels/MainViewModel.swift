@@ -15,12 +15,12 @@ class MainViewModel : ViewModelType{
     
     struct Input {
         let loadAPI : Driver<Bool>
-        let displayRates : Driver<[DisplayRatesRealmModel]>
+        let displayRates : Driver<[DisplayCurrencyRealmModel]>
     }
     
     struct Output {
         let isLoading : Driver<Bool>
-        let displayRatesSection : Driver<[DisplayRatesAnimatedSectionModel]>
+        let displayRatesSection : Driver<[DisplayCurrenciesAnimatedSectionModel]>
     }
     
     func transform(input: MainViewModel.Input) -> MainViewModel.Output {
@@ -81,8 +81,8 @@ class MainViewModel : ViewModelType{
         
         
         /// Realm
-        let displayRatesSection = input.displayRates.map { (displayRatesModels) -> [DisplayRatesAnimatedSectionModel] in
-            return [DisplayRatesAnimatedSectionModel(header: "section", items: displayRatesModels)]
+        let displayRatesSection = input.displayRates.map { (displayRatesModels) -> [DisplayCurrenciesAnimatedSectionModel] in
+            return [DisplayCurrenciesAnimatedSectionModel(header: "section", items: displayRatesModels)]
         }
         
         return Output(isLoading: isLoading,

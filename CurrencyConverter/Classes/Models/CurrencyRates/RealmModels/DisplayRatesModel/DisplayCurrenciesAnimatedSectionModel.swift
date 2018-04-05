@@ -9,19 +9,19 @@
 import Foundation
 import RxDataSources
 
-struct DisplayRatesAnimatedSectionModel{
+struct DisplayCurrenciesAnimatedSectionModel{
     var header : String
-    var items : [DisplayRatesRealmModel]
+    var items : [DisplayCurrencyRealmModel]
 }
 
-extension DisplayRatesAnimatedSectionModel : AnimatableSectionModelType{
-    typealias Item = DisplayRatesRealmModel
+extension DisplayCurrenciesAnimatedSectionModel : AnimatableSectionModelType{
+    typealias Item = DisplayCurrencyRealmModel
     
     var identity: String {
         return header
     }
     
-    init(original: DisplayRatesAnimatedSectionModel, items: [Item]) {
+    init(original: DisplayCurrenciesAnimatedSectionModel, items: [Item]) {
         self = original
         self.items = items
     }

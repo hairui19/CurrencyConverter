@@ -26,6 +26,9 @@ class CurrencyListViewController : UIViewController{
     // MARK: - Navigations
     var closeDismiss : (()->Void)!
     
+    // MARK: - ViewController Input [Optional]
+    var displayRates : DisplayCurrencyType!
+    
     // MARK: - Ect
     private let bag = DisposeBag()
     

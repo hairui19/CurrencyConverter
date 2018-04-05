@@ -9,10 +9,10 @@
 import Foundation
 import RealmSwift
 
-class DisplayRatesContainerRealmModel : Object{
+class DisplayCurrenciesContainerRealmModel : Object{
     
     @objc dynamic var key = "DisplayRatesContainerRealmModel.key"
-    let orderedDisplayRateList = List<DisplayRatesRealmModel>()
+    let orderedDisplayRateList = List<DisplayCurrencyRealmModel>()
     
     // MARK: -
     override static func primaryKey() -> String? {
@@ -24,8 +24,8 @@ class DisplayRatesContainerRealmModel : Object{
     /// This is to fetch the default container
     /// If the default container is not available when we try to retrieve it
     /// It will be created on the spot
-    private static func createDefaultContainer(in realm: Realm) -> DisplayRatesContainerRealmModel{
-        let container = DisplayRatesContainerRealmModel()
+    private static func createDefaultContainer(in realm: Realm) -> DisplayCurrenciesContainerRealmModel{
+        let container = DisplayCurrenciesContainerRealmModel()
         try! realm.write {
             realm.add(container)
         }
@@ -33,8 +33,8 @@ class DisplayRatesContainerRealmModel : Object{
     }
     
     @discardableResult
-    static func defaultContainer(in realm: Realm) -> DisplayRatesContainerRealmModel {
-        return realm.object(ofType: DisplayRatesContainerRealmModel.self, forPrimaryKey: "DisplayRatesContainerRealmModel.key")
+    static func defaultContainer(in realm: Realm) -> DisplayCurrenciesContainerRealmModel {
+        return realm.object(ofType: DisplayCurrenciesContainerRealmModel.self, forPrimaryKey: "DisplayRatesContainerRealmModel.key")
             ?? createDefaultContainer(in: realm)
     }
 }

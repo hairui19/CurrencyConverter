@@ -27,7 +27,7 @@ class MainCoordinator : Coordinator{
         }
     
         viewController.presentCurrencyList = {
-            [weak self] in
+            [weak self]  in
             self?.presentCurrencyList()
         }
         
@@ -35,6 +35,12 @@ class MainCoordinator : Coordinator{
             [weak self] in
             self?.presentAmountEntry()
         }
+        
+        viewController.presentCurrencyListForBaseCurrency = {
+            [weak self] baseCurrency in
+            self?.presentCurrencyListForBaseCurrency(baseCurrency: baseCurrency)
+        }
+    
         
     }
 }
@@ -54,6 +60,21 @@ extension MainCoordinator{
         }
         self.router.present(newRouter, animated: true, hideNavBar: false)
     }
+    /// These two functions can be factored into one
+    private func presentCurrencyListForBaseCurrency(baseCurrency : DisplayBaseCurrencyRealmModel){
+        let navigationController = UINavigationController()
+        let newRouter = Router(navigationController: navigationController)
+        let coordinator = CoordinatorFactory.createCurrencyListCoordinator(router: newRouter)
+        self.addChildCoordinator(coordinator)
+        newRouter.setRootModule(coordinator.viewController)
+        newRouter.finishedVerticalFlow = {
+            [weak self, weak coordinator] in
+            self?.router.dismissModule(animated: true, completion: nil)
+            self?.removeChildCoordinator(coordinator!)
+        }
+        self.router.present(newRouter, animated: true, hideNavBar: false)
+    }
+
     
     private func presentAmountEntry(){
         let navigationController = UINavigationController()
