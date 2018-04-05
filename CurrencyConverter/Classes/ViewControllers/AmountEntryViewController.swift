@@ -99,10 +99,10 @@ extension AmountEntryViewController{
 //            .map{$0!}
 //            .asDriver(onErrorJustReturn: "")
 //            .filter{$0.count > 0}
-//        
+//
 //        let input = AmountEntryViewModel.Input(accumulator: accumulator)
 //        let output = viewModel.transform(input: input)
-//        
+//
 //        output.enableConvertButton.drive(convertBarButtonItem.rx.isEnabled).disposed(by: bag)
     }
 }

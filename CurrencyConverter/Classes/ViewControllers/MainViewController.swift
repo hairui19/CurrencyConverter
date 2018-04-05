@@ -15,7 +15,6 @@ class MainViewController : UIViewController{
 
     // MARK: - IBOulets and UIs
     private var plusBarButtonItem : UIBarButtonItem!
-    @IBOutlet weak var dummyButton: UIButton!
     
     // MARK: - Navigations
     var presentCurrencyList : (()->Void)!
@@ -47,23 +46,17 @@ extension MainViewController{
     private func setupNavigationBarUI(){
         plusBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
         navigationItem.rightBarButtonItem = plusBarButtonItem
-        
-        (plusBarButtonItem.rx.tap)
-            .subscribe(onNext: { [weak self] (_) in
-                self?.presentCurrencyList()
-            })
-        .disposed(by: bag)
     }
 }
 
 // MARK: - UI Binding
 extension MainViewController{
     private func UIBinding(){
-        (dummyButton.rx.tap)
+        (plusBarButtonItem.rx.tap)
             .subscribe(onNext: { [weak self] (_) in
-                self?.presentAmountEntry()
+                self?.presentCurrencyList()
             })
-        .disposed(by: bag)
+            .disposed(by: bag)
     }
 }
 

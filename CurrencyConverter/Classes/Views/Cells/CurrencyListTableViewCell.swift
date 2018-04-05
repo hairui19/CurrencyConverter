@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CurrencyListTableViewCell: UITableViewCell {
+class CurrencyListTableViewCell: UITableViewCell,CellReuseIdentifiable{
 
     
     class func reuseIdentifier() -> String { return "CurrencyListTableViewCell"}

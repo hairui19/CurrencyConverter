@@ -13,4 +13,5 @@ target 'CurrencyConverter' do
   pod 'RxDataSources', '~> 3.0'
   pod 'RealmSwift'
   pod 'RxRealm'
+  pod 'RxGesture'
 end

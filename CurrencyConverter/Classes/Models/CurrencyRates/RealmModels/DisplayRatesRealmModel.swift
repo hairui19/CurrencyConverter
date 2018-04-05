@@ -13,7 +13,10 @@ class DisplayRatesRealmModel : Object{
 
     // MARK: - Properties
     @objc dynamic var countryName : String = ""
-    @objc dynamic var currencyRate : Double = 0
-    @objc dynamic var currentValue : Double = 0
+    @objc dynamic var ownRate : Double = 0
+    @objc dynamic var ownAmount : Double = 0
+    @objc dynamic var comparingRate : Double = 0
+    @objc dynamic var comparingAmount : Double = 0
+    
     
 }

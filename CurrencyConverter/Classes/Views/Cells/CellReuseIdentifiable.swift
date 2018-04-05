@@ -6,4 +6,9 @@
 //  Copyright © 2018 Hairui's Organisation. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+public protocol CellReuseIdentifiable: AnyObject {
+    static func reuseIdentifier() -> String
+}
+
