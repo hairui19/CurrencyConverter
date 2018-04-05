@@ -13,6 +13,9 @@
 		FE4C30A9207512E500D4E0A5 /* RatesDisplayRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4C30A8207512E500D4E0A5 /* RatesDisplayRealmModel.swift */; };
 		FE4C30AB2075B22B00D4E0A5 /* AmountEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4C30AA2075B22B00D4E0A5 /* AmountEntryViewController.swift */; };
 		FE4C30AD2075B26700D4E0A5 /* AmountEntryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4C30AC2075B26700D4E0A5 /* AmountEntryCoordinator.swift */; };
+		FE4C30AF2075B95200D4E0A5 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4C30AE2075B95200D4E0A5 /* Fonts.swift */; };
+		FE4C30B12075C25200D4E0A5 /* AmountEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4C30B02075C25200D4E0A5 /* AmountEntryViewModel.swift */; };
+		FE4C30B42075C9E500D4E0A5 /* HRNumberWithSuperscriptLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4C30B32075C9E500D4E0A5 /* HRNumberWithSuperscriptLabel.swift */; };
 		FE929DE4207464CE0001C8F8 /* Routerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE929DE3207464CE0001C8F8 /* Routerable.swift */; };
 		FE929DE8207466920001C8F8 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE929DE7207466920001C8F8 /* MainCoordinator.swift */; };
 		FE929DEB207469020001C8F8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE929DEA207469020001C8F8 /* MainViewController.swift */; };
@@ -52,6 +55,7 @@
 		FE9A4CF82074BE450062971B /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9A4CF72074BE450062971B /* Images.swift */; };
 		FE9A4CFA2074C3CA0062971B /* UIScrollView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9A4CF92074C3CA0062971B /* UIScrollView+Rx.swift */; };
 		FE9A4CFD2074CDDA0062971B /* CurrencyRatesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9A4CFC2074CDDA0062971B /* CurrencyRatesModel.swift */; };
+		FEB0DE7C207606C0009EBF8C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0DE7B207606C0009EBF8C /* UIColor+Extension.swift */; };
 		FED6709C20745D8D008037E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED6709B20745D8D008037E4 /* AppDelegate.swift */; };
 		FED6709E20745D8D008037E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED6709D20745D8D008037E4 /* ViewController.swift */; };
 		FED670A120745D8D008037E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FED6709F20745D8D008037E4 /* Main.storyboard */; };
@@ -71,6 +75,9 @@
 		FE4C30A8207512E500D4E0A5 /* RatesDisplayRealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesDisplayRealmModel.swift; sourceTree = "<group>"; };
 		FE4C30AA2075B22B00D4E0A5 /* AmountEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountEntryViewController.swift; sourceTree = "<group>"; };
 		FE4C30AC2075B26700D4E0A5 /* AmountEntryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountEntryCoordinator.swift; sourceTree = "<group>"; };
+		FE4C30AE2075B95200D4E0A5 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		FE4C30B02075C25200D4E0A5 /* AmountEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountEntryViewModel.swift; sourceTree = "<group>"; };
+		FE4C30B32075C9E500D4E0A5 /* HRNumberWithSuperscriptLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HRNumberWithSuperscriptLabel.swift; sourceTree = "<group>"; };
 		FE929DE3207464CE0001C8F8 /* Routerable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routerable.swift; sourceTree = "<group>"; };
 		FE929DE7207466920001C8F8 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		FE929DEA207469020001C8F8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +117,7 @@
 		FE9A4CF72074BE450062971B /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		FE9A4CF92074C3CA0062971B /* UIScrollView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Rx.swift"; sourceTree = "<group>"; };
 		FE9A4CFC2074CDDA0062971B /* CurrencyRatesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRatesModel.swift; sourceTree = "<group>"; };
+		FEB0DE7B207606C0009EBF8C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		FED6709820745D8D008037E4 /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FED6709B20745D8D008037E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FED6709D20745D8D008037E4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +166,14 @@
 				FE4C30A42074F42800D4E0A5 /* LatestRatesRealmModel.swift */,
 			);
 			path = RealmModels;
+			sourceTree = "<group>";
+		};
+		FE4C30B22075C97A00D4E0A5 /* Custom Class */ = {
+			isa = PBXGroup;
+			children = (
+				FE4C30B32075C9E500D4E0A5 /* HRNumberWithSuperscriptLabel.swift */,
+			);
+			path = "Custom Class";
 			sourceTree = "<group>";
 		};
 		FE929DE5207464E80001C8F8 /* Protocols */ = {
@@ -210,6 +226,7 @@
 		FE929DF020746BF50001C8F8 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				FE4C30AE2075B95200D4E0A5 /* Fonts.swift */,
 				FE9A4CF62074BE290062971B /* ViewControllers */,
 				FE9A4CF72074BE450062971B /* Images.swift */,
 			);
@@ -316,6 +333,7 @@
 			children = (
 				FE4C30A620750DA200D4E0A5 /* MainViewModel.swift */,
 				FE9A4CD52074A5660062971B /* CurrencyListViewModel.swift */,
+				FE4C30B02075C25200D4E0A5 /* AmountEntryViewModel.swift */,
 				FE9A4CD42074A5470062971B /* Base */,
 			);
 			path = ViewModels;
@@ -374,6 +392,7 @@
 			children = (
 				FE9A4CF42074B81D0062971B /* UITableView+Extension.swift */,
 				FE9A4CF92074C3CA0062971B /* UIScrollView+Rx.swift */,
+				FEB0DE7B207606C0009EBF8C /* UIColor+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -453,6 +472,7 @@
 				FE929E04207476B70001C8F8 /* Models */,
 				FED670AE20746398008037E4 /* Coordinators */,
 				FE9A4CDF2074B60D0062971B /* Views */,
+				FE4C30B22075C97A00D4E0A5 /* Custom Class */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -635,9 +655,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE4C30A9207512E500D4E0A5 /* RatesDisplayRealmModel.swift in Sources */,
+				FEB0DE7C207606C0009EBF8C /* UIColor+Extension.swift in Sources */,
 				FE929E06207476CE0001C8F8 /* GeneraAPIModel.swift in Sources */,
 				FED670B320746438008037E4 /* Router.swift in Sources */,
 				FE9A4CD82074A6E10062971B /* CurrencySymbolModel.swift in Sources */,
+				FE4C30B42075C9E500D4E0A5 /* HRNumberWithSuperscriptLabel.swift in Sources */,
 				FE9A4CF82074BE450062971B /* Images.swift in Sources */,
 				FE9A4CCE2074A13C0062971B /* FileReaderServiceFactory.swift in Sources */,
 				FE9A4CE32074B66C0062971B /* CurrencyListTableViewCell.swift in Sources */,
@@ -662,6 +684,7 @@
 				FE9A4CCA207499850062971B /* FileResult.swift in Sources */,
 				FE9A4CCC20749A1B0062971B /* FileReaderServiceImp.swift in Sources */,
 				FE9A4CD02074A4180062971B /* CurrencyListViewController.swift in Sources */,
+				FE4C30AF2075B95200D4E0A5 /* Fonts.swift in Sources */,
 				FE929E0920747DF40001C8F8 /* APIServiceFactory.swift in Sources */,
 				FE929E0B20747F140001C8F8 /* CurrencySymbolsModel.swift in Sources */,
 				FE9A4CC6207498C80062971B /* FileReaderServiceEndPoints.swift in Sources */,
@@ -672,6 +695,7 @@
 				FE4C30AD2075B26700D4E0A5 /* AmountEntryCoordinator.swift in Sources */,
 				FE929E02207475840001C8F8 /* APIServiceEndpoints+SampleData.swift in Sources */,
 				FE929DEB207469020001C8F8 /* MainViewController.swift in Sources */,
+				FE4C30B12075C25200D4E0A5 /* AmountEntryViewModel.swift in Sources */,
 				FE929DFC207473E40001C8F8 /* APIServiceImp.swift in Sources */,
 				FE9A4CFD2074CDDA0062971B /* CurrencyRatesModel.swift in Sources */,
 				FE9A4CD32074A53E0062971B /* ViewModelType.swift in Sources */,
