@@ -29,7 +29,7 @@ class MainViewController : UIViewController{
     let loadAPI = Variable<Bool>(true)
     
     // MARK: - Display Data
-    var displayRates: Results<DisplayRatesRealmModel>!
+    var displayRates: List<DisplayRatesRealmModel>!
     
     // MARK: - Ect
     private let bag = DisposeBag()
@@ -104,7 +104,8 @@ extension MainViewController{
         
         ///
         let realm = try! Realm()
-        displayRates = realm.objects(DisplayRatesRealmModel.self).sorted(byKeyPath: "index", ascending: true)
+        displayRates = DisplayRatesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
+//        displayRates = realm.objects(DisplayRatesRealmModel.self).sorted(byKeyPath: "index", ascending: true)
 //        //        displayRates =  DisplayRatesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
         
         Observable.collection(from: displayRates)
@@ -151,14 +152,10 @@ extension MainViewController : UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let sourceItem = displayRates[sourceIndexPath.row]
-        let destinationItem = displayRates[destinationIndexPath.row]
         let realm = try! Realm()
         try! realm.write {
-            sourceItem.index = destinationIndexPath.row
-            destinationItem.index = sourceIndexPath.row
+            displayRates.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
         }
-        
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

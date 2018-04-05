@@ -68,10 +68,8 @@ class CurrencyListViewModel : ViewModelType{
             let currencyName = model.currencyName
             let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName)
             let displayRatesModel = DisplayRatesRealmModel(countryName: model.countryFullName, ownRate: latestRatesModel!.currencyRate)
-            let count = realm.objects(DisplayRatesRealmModel.self).count
-            displayRatesModel.index = count
             try! realm.write {
-                realm.add(displayRatesModel)
+                DisplayRatesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList.append(displayRatesModel)
             }
             return true
         }
