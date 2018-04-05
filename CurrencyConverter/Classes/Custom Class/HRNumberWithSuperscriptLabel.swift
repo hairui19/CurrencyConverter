@@ -58,7 +58,7 @@ class HRNumberWithSuperscriptLabel : UILabel{
         accumulator.append(".")
     }
 
-    public func getResult()->Double{
+    var result : Double{
         guard let lastChar = accumulator.last else{
             /// Accumulator at all times should have at least
             /// one character
@@ -101,7 +101,7 @@ class HRNumberWithSuperscriptLabel : UILabel{
     
     /// This is the property that accumulates the digits
     /// The starting value of the accumulator is set to "0"
-    private var accumulator : String = "0"{
+    @objc dynamic var accumulator : String = "0"{
         didSet{
             print("the accumulator = \(accumulator)")
             setAttributedText(text: accumulator)
@@ -112,7 +112,7 @@ class HRNumberWithSuperscriptLabel : UILabel{
     }
     
     /// Currency Formatter
-    private var currencyFormatter : NumberFormatter = {
+     private var currencyFormatter : NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.minimumFractionDigits = 0

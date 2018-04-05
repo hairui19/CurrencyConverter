@@ -29,5 +29,10 @@ class AmountEntryCoordinator : Coordinator{
             fatalError("Wrong ViewController Embedded")
         }
         
+        viewController.closeDismiss = {
+            [weak self] in
+            self?.router.finishedVerticalFlow!()
+        }
+        
     }
 }

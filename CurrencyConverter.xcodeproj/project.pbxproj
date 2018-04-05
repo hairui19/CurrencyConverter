@@ -56,6 +56,7 @@
 		FE9A4CFA2074C3CA0062971B /* UIScrollView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9A4CF92074C3CA0062971B /* UIScrollView+Rx.swift */; };
 		FE9A4CFD2074CDDA0062971B /* CurrencyRatesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9A4CFC2074CDDA0062971B /* CurrencyRatesModel.swift */; };
 		FEB0DE7C207606C0009EBF8C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0DE7B207606C0009EBF8C /* UIColor+Extension.swift */; };
+		FEB0DE7E20760FBE009EBF8C /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0DE7D20760FBE009EBF8C /* UIBarButtonItem+Extension.swift */; };
 		FED6709C20745D8D008037E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED6709B20745D8D008037E4 /* AppDelegate.swift */; };
 		FED6709E20745D8D008037E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED6709D20745D8D008037E4 /* ViewController.swift */; };
 		FED670A120745D8D008037E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FED6709F20745D8D008037E4 /* Main.storyboard */; };
@@ -118,6 +119,7 @@
 		FE9A4CF92074C3CA0062971B /* UIScrollView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Rx.swift"; sourceTree = "<group>"; };
 		FE9A4CFC2074CDDA0062971B /* CurrencyRatesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRatesModel.swift; sourceTree = "<group>"; };
 		FEB0DE7B207606C0009EBF8C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		FEB0DE7D20760FBE009EBF8C /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		FED6709820745D8D008037E4 /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FED6709B20745D8D008037E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FED6709D20745D8D008037E4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				FE9A4CF42074B81D0062971B /* UITableView+Extension.swift */,
 				FE9A4CF92074C3CA0062971B /* UIScrollView+Rx.swift */,
 				FEB0DE7B207606C0009EBF8C /* UIColor+Extension.swift */,
+				FEB0DE7D20760FBE009EBF8C /* UIBarButtonItem+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 				FE9A4CD02074A4180062971B /* CurrencyListViewController.swift in Sources */,
 				FE4C30AF2075B95200D4E0A5 /* Fonts.swift in Sources */,
 				FE929E0920747DF40001C8F8 /* APIServiceFactory.swift in Sources */,
+				FEB0DE7E20760FBE009EBF8C /* UIBarButtonItem+Extension.swift in Sources */,
 				FE929E0B20747F140001C8F8 /* CurrencySymbolsModel.swift in Sources */,
 				FE9A4CC6207498C80062971B /* FileReaderServiceEndPoints.swift in Sources */,
 				FE9A4CDB2074A8620062971B /* CurrencySymbolsSectionModel.swift in Sources */,

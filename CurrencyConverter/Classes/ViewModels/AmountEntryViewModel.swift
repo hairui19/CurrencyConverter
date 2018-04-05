@@ -12,21 +12,37 @@ import RxSwift
 
 class AmountEntryViewModel : ViewModelType{
     
-    // MARK: - Proproties
-    private let accumulator = Variable<String>("")
-    private var isAtTheBeginningOfTypng : Bool = true
-    
     struct Input {
-        let digit : Driver<Int>
+        let currencyName : String
+        let accumulator : Driver<String>
+        let convertButton : Driver<()>
     }
     
     struct Output{
-        
+        let enableConvertButton : Driver<Bool>
     }
     
 
     func transform(input: AmountEntryViewModel.Input) -> AmountEntryViewModel.Output {
-        return Output()
+        
+        let result = input.accumulator
+            .map { (text) -> Double in
+                let newText = text.replacingOccurrences(of: ".", with: "")
+                guard let doubleValue = Double(newText) else{
+                    fatalError("Should be able to conver to doubleValue")
+                }
+                return doubleValue
+            }
+        
+        let enableConvertButton = result.map { (value) -> Bool in
+            return value > 0
+        }
+        
+        input.convertButton.map { (_) -> Void in
+            
+        }
+        
+        return Output(enableConvertButton: enableConvertButton)
     }
     
 }
