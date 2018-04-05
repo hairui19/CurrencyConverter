@@ -15,14 +15,18 @@ class MainViewModel : ViewModelType{
     
     struct Input {
         let loadAPI : Driver<Bool>
+        let displayRates : Driver<[DisplayRatesRealmModel]>
     }
     
     struct Output {
         let isLoading : Driver<Bool>
+        let displayRatesSection : Driver<[DisplayRatesAnimatedSectionModel]>
     }
     
     func transform(input: MainViewModel.Input) -> MainViewModel.Output {
         
+        
+        /// APIs
         let latestRatesAPIResult = input.loadAPI
             .flatMapLatest { (_) -> Driver<APIResult> in
                 let service = APIServiceFactory.createGetLatestRatesService()
@@ -75,7 +79,14 @@ class MainViewModel : ViewModelType{
             ])
         .merge()
         
-        return Output(isLoading: isLoading)
+        
+        /// Realm
+        let displayRatesSection = input.displayRates.map { (displayRatesModels) -> [DisplayRatesAnimatedSectionModel] in
+            return [DisplayRatesAnimatedSectionModel(header: "section", items: displayRatesModels)]
+        }
+        
+        return Output(isLoading: isLoading,
+                      displayRatesSection: displayRatesSection)
     }
     
 }

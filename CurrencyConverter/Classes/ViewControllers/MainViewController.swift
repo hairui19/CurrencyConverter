@@ -7,16 +7,17 @@
 //
 
 import UIKit
-import ObjectMapper
 import RxSwift
 import RealmSwift
 import RxGesture
 import RxRealm
+import RxDataSources
 
 class MainViewController : UIViewController{
     
     // MARK: - IBOulets and UIs
     private var plusBarButtonItem : UIBarButtonItem!
+    private var editBarButtonItem : UIBarButtonItem!
     @IBOutlet weak var mainCurrencyDisplayView: MainCurrencyDisplayView!
     @IBOutlet weak var tableView: UITableView!
     
@@ -29,7 +30,8 @@ class MainViewController : UIViewController{
     let loadAPI = Variable<Bool>(true)
     
     // MARK: - Display Data
-    var displayRates: List<DisplayRatesRealmModel>!
+    var displayRates : List<DisplayRatesRealmModel>!
+    var displayRatesSection = Variable<[DisplayRatesAnimatedSectionModel]>([])
     
     // MARK: - Ect
     private let bag = DisposeBag()
@@ -41,8 +43,11 @@ class MainViewController : UIViewController{
         viewModelBinding()
         UIBinding()
         setupTableView()
-        
-        print("the apth to realm\(Realm.Configuration.defaultConfiguration.description)")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
 }
 
@@ -54,7 +59,8 @@ extension MainViewController{
     
     private func setupNavigationBarUI(){
         plusBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
-        navigationItem.rightBarButtonItem = plusBarButtonItem
+        editBarButtonItem = UIBarButtonItem(withTitle: "Edit", font: Fonts.get(.asap_medium, fontSize: 15))
+        navigationItem.rightBarButtonItems = [plusBarButtonItem, editBarButtonItem]
     }
 }
 
@@ -67,13 +73,23 @@ extension MainViewController{
             })
             .disposed(by: bag)
         
+        (editBarButtonItem.rx.tap)
+            .subscribe(onNext: { [weak self] (_) in
+                if let strongSelf = self{
+                    strongSelf.tableView.isEditing = !strongSelf.tableView.isEditing
+                }
+            })
+            .disposed(by: bag)
+        
         mainCurrencyDisplayView.rx.tapGesture()
             .when(.recognized)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (_) in
-                self!.tableView.isEditing = !self!.tableView.isEditing
+
             })
             .disposed(by: bag)
+        
+        
     }
 }
 
@@ -81,10 +97,16 @@ extension MainViewController{
 // MARK: - ViewModel Binding
 extension MainViewController{
     private func viewModelBinding(){
+        let realm = try! Realm()
+        displayRates = DisplayRatesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
+        let displayRatesObservable = Observable.array(from: displayRates).asDriver(onErrorJustReturn: [])
+        
         viewModel = MainViewModel()
-        let input = MainViewModel.Input(loadAPI: loadAPI.asDriver())
+        let input = MainViewModel.Input(loadAPI: loadAPI.asDriver().debug(),
+                                        displayRates: displayRatesObservable)
         let output = viewModel.transform(input: input)
         output.isLoading.debug("let' see the loading").drive().disposed(by: bag)
+        output.displayRatesSection.drive(displayRatesSection).disposed(by: bag)
     }
 }
 
@@ -100,21 +122,50 @@ extension MainViewController{
         
         /// set delegate
         tableView.delegate = self
-        tableView.dataSource = self
         
-        ///
-        let realm = try! Realm()
-        displayRates = DisplayRatesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
-//        displayRates = realm.objects(DisplayRatesRealmModel.self).sorted(byKeyPath: "index", ascending: true)
-//        //        displayRates =  DisplayRatesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
-        
-        Observable.collection(from: displayRates)
-            .subscribe(onNext: { [weak self] (_) in
-                self?.tableView.reloadData()
-            })
+        displayRatesSection.asObservable()
+        .observeOn(MainScheduler.instance)
+        .bind(to: tableView.rx.items(dataSource: dataSource()))
         .disposed(by: bag)
-
+        
+        /// delete item
+        tableView.rx.itemDeleted.subscribe(onNext: { [unowned self](indexPath) in
+            let realm = try! Realm()
+            try! realm.write {
+                self.displayRates.remove(at: indexPath.row)
+            }
+        })
+        .disposed(by: bag)
+        
+        tableView.rx.itemMoved.subscribe(onNext: { (sourceIndexPath, destinationIndexPath) in
+            let realm = try! Realm()
+            try! realm.write {
+                self.displayRates.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+            }
+        })
+        .disposed(by: bag)
+        
     }
+    
+    private func dataSource()->RxTableViewSectionedAnimatedDataSource<DisplayRatesAnimatedSectionModel>{
+        return RxTableViewSectionedAnimatedDataSource<DisplayRatesAnimatedSectionModel>(
+            animationConfiguration: AnimationConfiguration(insertAnimation: .fade,
+                                                           reloadAnimation: .fade),
+            configureCell: {dataSource, tableView, indexPath, item in
+                let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyDisplayTableViewCell.reuseIdentifier(), for: indexPath) as! CurrencyDisplayTableViewCell
+                cell.ratesModel = item
+                return cell
+            },
+            canEditRowAtIndexPath: {  _, _ in
+                return true
+        },
+            canMoveRowAtIndexPath: { tesst, tesst1 in
+                return true
+        }
+        )
+    }
+    
+    
 }
 
 // MARK: - TableView Delegate
@@ -124,46 +175,7 @@ extension MainViewController : UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let displayRate = displayRates[indexPath.row]
-        print("the countryname = \(displayRate.countryName)")
     }
 }
 
-// MARK: - TableView Datasource
-extension MainViewController : UITableViewDataSource{
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return displayRates.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyDisplayTableViewCell.reuseIdentifier(), for: indexPath) as! CurrencyDisplayTableViewCell
-        cell.ratesModel = displayRates[indexPath.row]
-        return cell
-    }
-    
-    
-    /// Move tableView
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let realm = try! Realm()
-        try! realm.write {
-            displayRates.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete{
-            Observable.from([displayRates[indexPath.row]])
-                .subscribe(Realm.rx.delete())
-                .disposed(by: bag)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
-    }
-}
+

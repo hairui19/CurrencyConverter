@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import RxDataSources
 
 class DisplayRatesRealmModel : Object{
 
@@ -33,5 +34,14 @@ class DisplayRatesRealmModel : Object{
     override static func primaryKey() -> String? {
         return "countryName"
     }
-
 }
+
+extension DisplayRatesRealmModel : IdentifiableType{
+    var identity: String {
+        return "\(countryName)"
+    }
+    
+}
+
+
+

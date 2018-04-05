@@ -7,3 +7,22 @@
 //
 
 import Foundation
+import RxDataSources
+
+struct DisplayRatesAnimatedSectionModel{
+    var header : String
+    var items : [DisplayRatesRealmModel]
+}
+
+extension DisplayRatesAnimatedSectionModel : AnimatableSectionModelType{
+    typealias Item = DisplayRatesRealmModel
+    
+    var identity: String {
+        return header
+    }
+    
+    init(original: DisplayRatesAnimatedSectionModel, items: [Item]) {
+        self = original
+        self.items = items
+    }
+}
