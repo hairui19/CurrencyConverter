@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class RatesDisplayRealmModel : Object{
+class DisplayRatesRealmModel : Object{
 
     // MARK: - Properties
     @objc dynamic var countryName : String = ""
