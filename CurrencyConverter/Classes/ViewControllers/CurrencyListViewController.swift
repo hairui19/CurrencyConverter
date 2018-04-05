@@ -9,6 +9,8 @@
 import UIKit
 import RxSwift
 import RxDataSources
+import RxGesture
+import RealmSwift
 
 class CurrencyListViewController : UIViewController{
     
@@ -102,11 +104,25 @@ extension CurrencyListViewController{
 extension CurrencyListViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = sections.value[indexPath.section].items[indexPath.row]
+        addDisplayRates(selectedItem)
+        closeDismiss()
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+    
+    private func addDisplayRates(_ model : CurrencySymbolModel){
+        let currencyName = model.currencyName
+        let realm = try! Realm()
+        let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName)
+        let displayRatesModel = DisplayRatesRealmModel(countryName: model.countryFullName, ownRate: latestRatesModel!.currencyRate)
+        let count = realm.objects(DisplayRatesRealmModel.self).count
+        displayRatesModel.index = count
+        try! realm.write {
+            realm.add(displayRatesModel)
+        }
     }
 }
 
@@ -131,9 +147,19 @@ extension CurrencyListViewController{
     }
     
     private func addTapAnyWhereToDismissGesture(){
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchToDismissKeyBoard))
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
+        view.rx
+            .tapGesture{
+                tapGesure, delegate in
+                tapGesure.cancelsTouchesInView = false
+            }
+            .when(.recognized)
+            .observeOn(MainScheduler.instance)
+            .subscribe({ [weak self] (tapGestureEvent) in
+                if let _ = tapGestureEvent.element{
+                    self?.view.endEditing(true)
+                }
+            })
+            .disposed(by: bag)
     }
     
     @objc private func touchToDismissKeyBoard(){

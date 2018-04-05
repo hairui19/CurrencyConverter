@@ -66,6 +66,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lyo-TG-74I"/>
                     </view>
+                    <connections>
+                        <outlet property="mainCurrencyDisplayView" destination="XFL-cR-LDz" id="d34-Ce-Dlr"/>
+                        <outlet property="tableView" destination="kpy-Kd-lTZ" id="tqu-H2-hpI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGS-xp-13Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

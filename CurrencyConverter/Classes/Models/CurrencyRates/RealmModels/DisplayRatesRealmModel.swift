@@ -17,6 +17,17 @@ class DisplayRatesRealmModel : Object{
     @objc dynamic var ownAmount : Double = 0
     @objc dynamic var comparingRate : Double = 0
     @objc dynamic var comparingAmount : Double = 0
+    @objc dynamic var index : Int = 0 
     
+    var amount : String{
+        return "\(ownRate)"
+    }
     
+    // MARK: - Init
+    convenience init(countryName: String, ownRate : Double) {
+        self.init()
+        self.countryName = countryName
+        self.ownRate = ownRate
+    }
+
 }

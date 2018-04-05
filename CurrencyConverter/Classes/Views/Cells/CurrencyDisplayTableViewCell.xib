@@ -69,8 +69,8 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="amountLabel" destination="x7P-jt-icB" id="irw-n7-Ege"/>
                 <outlet property="countryNameLabel" destination="6Z9-8S-Cnl" id="9au-jk-M2D"/>
-                <outlet property="valueLabel" destination="x7P-jt-icB" id="irw-n7-Ege"/>
             </connections>
             <point key="canvasLocation" x="106" y="159"/>
         </tableViewCell>
