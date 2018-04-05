@@ -8,16 +8,19 @@
 
 import Foundation
 import RxCocoa
+import RealmSwift
 
 class CurrencyListViewModel : ViewModelType{
     
     
     struct Input {
         let searchText : Driver<String>
+        let addDisplayRates : Driver<CurrencySymbolModel>
     }
     
     struct Output {
         let currencySymbolSections : Driver<[CurrencySymbolsSectionModel]>
+        let completedStoryingInRealm : Driver<Bool>
     }
     
     func transform(input: CurrencyListViewModel.Input) -> CurrencyListViewModel.Output {
@@ -56,7 +59,25 @@ class CurrencyListViewModel : ViewModelType{
             .map{$0!}
         
         
-        return Output(currencySymbolSections: currencySymbolsSections)
+        /// Adding displayRates
+        let completedStoringInRealm = input.addDisplayRates.map { (model) -> Bool in
+            let realm = try! Realm()
+            if let _ = realm.object(ofType: DisplayRatesRealmModel.self, forPrimaryKey: model.countryFullName){
+                return true
+            }
+            let currencyName = model.currencyName
+            let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName)
+            let displayRatesModel = DisplayRatesRealmModel(countryName: model.countryFullName, ownRate: latestRatesModel!.currencyRate)
+            let count = realm.objects(DisplayRatesRealmModel.self).count
+            displayRatesModel.index = count
+            try! realm.write {
+                realm.add(displayRatesModel)
+            }
+            return true
+        }
+        
+        return Output(currencySymbolSections: currencySymbolsSections,
+                      completedStoryingInRealm: completedStoringInRealm)
     }
     
     

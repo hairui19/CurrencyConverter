@@ -10,7 +10,6 @@ import UIKit
 import RxSwift
 import RxDataSources
 import RxGesture
-import RealmSwift
 
 class CurrencyListViewController : UIViewController{
     
@@ -22,6 +21,7 @@ class CurrencyListViewController : UIViewController{
     // MARK: - ViewModel
     private var viewModel : CurrencyListViewModel!
     private let sections = Variable<[CurrencySymbolsSectionModel]>([])
+    private let addDisplayRates = Variable<CurrencySymbolModel?>(nil)
     
     // MARK: - Navigations
     var closeDismiss : (()->Void)!
@@ -33,6 +33,7 @@ class CurrencyListViewController : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        UIBinding()
         viewModelBinding()
         setupTableView()
         addGestures()
@@ -50,11 +51,18 @@ extension CurrencyListViewController{
     private func setupNavBarUI(){
         closeBarButtonItem = UIBarButtonItem(image: Images.general_close_icon.image, style: .plain, target: nil, action: nil)
         navigationItem.leftBarButtonItem = closeBarButtonItem
+        
+    }
+}
+
+// MARK: - UIBinding
+extension CurrencyListViewController{
+    private func UIBinding(){
         (closeBarButtonItem.rx.tap)
             .subscribe(onNext: { [weak self] (_) in
                 self?.closeDismiss()
             })
-        .disposed(by: bag)
+            .disposed(by: bag)
     }
 }
 
@@ -104,8 +112,7 @@ extension CurrencyListViewController{
 extension CurrencyListViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = sections.value[indexPath.section].items[indexPath.row]
-        addDisplayRates(selectedItem)
-        closeDismiss()
+        addDisplayRates.value = selectedItem
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -113,17 +120,6 @@ extension CurrencyListViewController : UITableViewDelegate{
         return 60
     }
     
-    private func addDisplayRates(_ model : CurrencySymbolModel){
-        let currencyName = model.currencyName
-        let realm = try! Realm()
-        let latestRatesModel = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName)
-        let displayRatesModel = DisplayRatesRealmModel(countryName: model.countryFullName, ownRate: latestRatesModel!.currencyRate)
-        let count = realm.objects(DisplayRatesRealmModel.self).count
-        displayRatesModel.index = count
-        try! realm.write {
-            realm.add(displayRatesModel)
-        }
-    }
 }
 
 
@@ -133,9 +129,13 @@ extension CurrencyListViewController{
         let searchText = searchBar.rx.text.orEmpty.asDriver().map{$0.trimmingCharacters(in:CharacterSet.whitespacesAndNewlines)}
         .distinctUntilChanged()
         viewModel = CurrencyListViewModel()
-        let input = CurrencyListViewModel.Input(searchText: searchText)
+        let input = CurrencyListViewModel.Input(searchText: searchText, addDisplayRates: addDisplayRates.asDriver().filter{$0 != nil}.map{$0!})
         let output = viewModel.transform(input: input)
         output.currencySymbolSections.drive(sections).disposed(by: bag)
+        output.completedStoryingInRealm.drive(onNext: { [weak self] (_) in
+            self?.closeDismiss()
+        })
+        .disposed(by: bag)
     }
 }
 

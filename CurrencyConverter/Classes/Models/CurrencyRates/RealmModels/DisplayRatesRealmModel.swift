@@ -29,5 +29,10 @@ class DisplayRatesRealmModel : Object{
         self.countryName = countryName
         self.ownRate = ownRate
     }
+    
+    // MARK: - Functions
+    override static func primaryKey() -> String? {
+        return "countryName"
+    }
 
 }
