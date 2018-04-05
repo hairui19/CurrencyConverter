@@ -15,20 +15,28 @@ class DisplayCurrencyRealmModel : Object, DisplayCurrencyType{
     // MARK: - Properties
     @objc dynamic var countryName : String = ""
     @objc dynamic var currencyName : String = ""
-    @objc dynamic var amount : Double = 0
-    @objc dynamic var comparingRate : Double = 0
-    @objc dynamic var comparingAmount : Double = 0
     
     var rate : Double{
-        let realm = try! Realm()
-        if let latestRates = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName){
-            return latestRates.currencyRate
-        }
-        return 0
+        return getRateFrom(currencyName: currencyName)
     }
     
+    var baseRate : Double{
+        return getBaseRate()
+    }
+    
+    var baseAmount : Double{
+        return getBaseAmount()
+    }
+    
+    private var currencyFormatter : NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 8
+        return formatter
+    }()
+    
     var displayAmount : String{
-        return "\(rate)"
+        return currencyFormatter.string(from: NSNumber(value: baseAmount * baseRate / rate)) ?? "$0"
     }
     
     // MARK: - Init
@@ -38,7 +46,25 @@ class DisplayCurrencyRealmModel : Object, DisplayCurrencyType{
         self.currencyName = currencyName
     }
     
-    // MARK: - Functions
+    // MARK: - Private Helpers
+    private func getRateFrom(currencyName : String)->Double{
+        let realm = try! Realm()
+        if let latestRates = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName){
+            return latestRates.currencyRate
+        }
+        return 0
+    }
+    
+    private func getBaseRate()->Double{
+        let realm = try! Realm()
+        return DisplayBaseCurrencyRealmModel.defaultCurrency(in: realm).rate
+    }
+    private func getBaseAmount()->Double{
+        let realm = try! Realm()
+        return DisplayBaseCurrencyRealmModel.defaultCurrency(in: realm).amount
+    }
+    
+    // MARK: -
     override static func primaryKey() -> String? {
         return "countryName"
     }

@@ -17,6 +17,7 @@ class DisplayBaseCurrencyRealmModel : Object, DisplayCurrencyType{
     @objc dynamic var currencyName : String = ""
     @objc dynamic var countryName : String = ""
     @objc dynamic var amount : Double = 0
+    
     var rate : Double{
         let realm = try! Realm()
         if let latestRates = realm.object(ofType: LatestRatesRealmModel.self, forPrimaryKey: currencyName){
@@ -28,13 +29,14 @@ class DisplayBaseCurrencyRealmModel : Object, DisplayCurrencyType{
     private var currencyFormatter : NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 8
         return formatter
     }()
     
     var displayAmount : String{
         return currencyFormatter.string(from: NSNumber(value: amount)) ?? "$0"
     }
-    static var conveniencePrimaryKey = "DisplayBaseCurrencyRealmModel.key"
+    
     let orderedDisplayRateList = List<DisplayCurrencyRealmModel>()
     
     
