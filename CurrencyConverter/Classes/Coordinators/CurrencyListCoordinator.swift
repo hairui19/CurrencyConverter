@@ -31,6 +31,7 @@ class CurrencyListCoordinator : Coordinator{
         
         viewController.closeDismiss = {
             [weak self] in
+            viewController.view.endEditing(true)
             self?.router.finishedVerticalFlow!()
         }
         
