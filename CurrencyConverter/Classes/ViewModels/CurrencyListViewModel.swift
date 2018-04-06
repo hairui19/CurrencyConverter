@@ -105,7 +105,7 @@ class CurrencyListViewModel : ViewModelType{
     
     
     
-    private func generateCountryListSections(currencySymbolsDic : [String : String])->[CurrencySymbolsSectionModel]{
+    func generateCountryListSections(currencySymbolsDic : [String : String])->[CurrencySymbolsSectionModel]{
         var currencySymbolsSectionDic : [String : [CurrencySymbolModel]] = [:]
         
         ///Create Section Dictionary

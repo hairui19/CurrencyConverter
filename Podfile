@@ -15,3 +15,18 @@ target 'CurrencyConverter' do
   pod 'RxRealm'
   pod 'RxGesture'
 end
+
+target 'CurrencyConverterTests' do
+    use_frameworks!
+    
+    pod 'Moya', '~> 11.0'
+    pod 'RxSwift',    '~> 4.0'
+    pod 'RxCocoa',    '~> 4.0'
+    pod 'ObjectMapper', '~> 3.1'
+    pod 'RxDataSources', '~> 3.0'
+    pod 'RealmSwift'
+    pod 'RxRealm'
+    pod 'RxGesture'
+end
+
+
