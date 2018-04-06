@@ -103,7 +103,6 @@ class HRNumberWithSuperscriptLabel : UILabel{
     /// The starting value of the accumulator is set to "0"
     @objc dynamic var accumulator : String = "0"{
         didSet{
-            print("the accumulator = \(accumulator)")
             setAttributedText(text: accumulator)
             if accumulator == "0"{
                 isAtBeginningOfTyping = true
