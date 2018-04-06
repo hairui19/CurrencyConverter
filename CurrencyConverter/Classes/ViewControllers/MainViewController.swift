@@ -150,6 +150,7 @@ extension MainViewController{
         
         /// some customisation
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
         
         /// set delegate
         tableView.delegate = self
@@ -202,9 +203,6 @@ extension MainViewController{
 extension MainViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
 }
 

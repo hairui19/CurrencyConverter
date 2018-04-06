@@ -33,6 +33,7 @@ class AmountEntryViewController : UIViewController{
         super.viewDidLoad()
         setupUI()
         viewModelBinding()
+        UIBinding()
     }
     
     // MARK: - IBActions
@@ -75,17 +76,22 @@ extension AmountEntryViewController{
         /// Add a left closeBarButton
         closeBarButtonItem = UIBarButtonItem(image: Images.general_close_icon.image, style: .plain, target: nil, action: nil)
         navigationItem.leftBarButtonItem = closeBarButtonItem
-        (closeBarButtonItem.rx.tap)
-            .subscribe(onNext: { [weak self] (_) in
-                self?.closeDismiss()
-            })
-            .disposed(by: bag)
         
         
         /// Add a right ConvertBarButton
         convertBarButtonItem = UIBarButtonItem(withTitle: "Convert", font: Fonts.get(.asap_medium, fontSize: 15))
         navigationItem.rightBarButtonItem = convertBarButtonItem
-        convertBarButtonItem.isEnabled = false
+    }
+}
+
+// MARK: - UI Binding
+extension AmountEntryViewController{
+    private func UIBinding(){
+        (closeBarButtonItem.rx.tap)
+            .subscribe(onNext: { [weak self] (_) in
+                self?.closeDismiss()
+            })
+            .disposed(by: bag)
     }
 }
 
@@ -93,17 +99,23 @@ extension AmountEntryViewController{
 // MARK: - ViewModel Binding
 extension AmountEntryViewController{
     private func viewModelBinding(){
-//        viewModel = AmountEntryViewModel()
-//        let accumulator = displayLabel.rx.observe(String.self, "accumulator")
-//            .filter{$0 != nil}
-//            .map{$0!}
-//            .asDriver(onErrorJustReturn: "")
-//            .filter{$0.count > 0}
-//
-//        let input = AmountEntryViewModel.Input(accumulator: accumulator)
-//        let output = viewModel.transform(input: input)
-//
-//        output.enableConvertButton.drive(convertBarButtonItem.rx.isEnabled).disposed(by: bag)
+        viewModel = AmountEntryViewModel()
+        let accumulator = displayLabel.rx.observe(String.self, "accumulator")
+            .filter{$0 != nil}
+            .map{$0!}
+            .asDriver(onErrorJustReturn: "")
+            .filter{$0.count > 0}
+
+        let input = AmountEntryViewModel.Input(
+            accumulator: accumulator,
+            convertButton: convertBarButtonItem.rx.tap.asDriver())
+        let output = viewModel.transform(input: input)
+
+        output.enableConvertButton.drive(convertBarButtonItem.rx.isEnabled).disposed(by: bag)
+        output.convert.drive(onNext: { [weak self] (success) in
+            self?.closeDismiss()
+        })
+        .disposed(by: bag)
     }
 }
 

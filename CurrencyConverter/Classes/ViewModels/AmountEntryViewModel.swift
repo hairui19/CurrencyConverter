@@ -9,17 +9,18 @@
 import Foundation
 import RxCocoa
 import RxSwift
+import RealmSwift
 
 class AmountEntryViewModel : ViewModelType{
     
     struct Input {
-        let currencyName : String
         let accumulator : Driver<String>
         let convertButton : Driver<()>
     }
     
     struct Output{
         let enableConvertButton : Driver<Bool>
+        let convert : Driver<Bool>
     }
     
 
@@ -27,8 +28,15 @@ class AmountEntryViewModel : ViewModelType{
         
         let result = input.accumulator
             .map { (text) -> Double in
-                let newText = text.replacingOccurrences(of: ".", with: "")
-                guard let doubleValue = Double(newText) else{
+                var accumulator = text
+                guard let lastChar = accumulator.last else{
+                    return 0
+                }
+                if lastChar == "."{
+                    accumulator.removeLast()
+                    
+                }
+                guard let doubleValue = Double(accumulator) else{
                     fatalError("Should be able to conver to doubleValue")
                 }
                 return doubleValue
@@ -37,12 +45,21 @@ class AmountEntryViewModel : ViewModelType{
         let enableConvertButton = result.map { (value) -> Bool in
             return value > 0
         }
+        .startWith(false)
         
-        input.convertButton.map { (_) -> Void in
-            
+        let convert = input.convertButton
+        .withLatestFrom(result)
+            .map { (value) -> Bool in
+                let realm = try! Realm()
+                let baseCurrecy = DisplayBaseCurrencyRealmModel.defaultCurrency(in: realm)
+                try! realm.write {
+                    baseCurrecy.amount = value
+                }
+                return true
         }
         
-        return Output(enableConvertButton: enableConvertButton)
+        return Output(enableConvertButton: enableConvertButton,
+                      convert: convert)
     }
     
 }

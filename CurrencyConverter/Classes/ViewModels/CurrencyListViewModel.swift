@@ -84,7 +84,10 @@ class CurrencyListViewModel : ViewModelType{
             try! realm.write {
                 baseCurrency.countryName = currencyModel.countryFullName
                 baseCurrency.currencyName = currencyModel.currencyName
-                baseCurrency.amount = 1
+                if !(baseCurrency.amount > 0) {
+                    baseCurrency.amount = 1
+                }
+                
             }
             return true
         }
