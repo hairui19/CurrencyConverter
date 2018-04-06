@@ -43,27 +43,15 @@ class MainViewController : UIViewController{
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadBaseCurrency()
         setupUI()
         viewModelBinding()
         UIBinding()
         setupTableView()
     }
-}
-
-// MARK: - Load Initial Data
-extension MainViewController{
-    private func loadBaseCurrency(){
-        let realm = try! Realm()
-        baseCurrency = DisplayBaseCurrencyRealmModel.defaultCurrency(in: realm)
-        Observable.from(object: baseCurrency)
-        .filter{$0.countryName != ""}
-            .subscribe(onNext: { [weak self] (baseCurrency) in
-                self?.mainCurrencyDisplayView.baseCurrency = baseCurrency
-            })
-        .disposed(by: bag)
-        
-        let something = Observable.from(object: baseCurrency)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
 }
 
@@ -102,13 +90,25 @@ extension MainViewController{
             })
             .disposed(by: bag)
         
+        (mainCurrencyDisplayView.countryButton.rx.tap)
+            .subscribe(onNext: { [unowned self] () in
+                self.presentCurrencyListForBaseCurrency(self.baseCurrency!)
+            })
+        .disposed(by: mainCurrencyDisplayView.bag)
+        
+        (mainCurrencyDisplayView.amountButton.rx.tap)
+            .subscribe(onNext: { [unowned self] () in
+                self.presentAmountEntry()
+            })
+            .disposed(by: mainCurrencyDisplayView.bag)
+        
         mainCurrencyDisplayView.rx.tapGesture()
-            .when(.recognized)
-            .observeOn(MainScheduler.instance)
+        .when(.recognized)
             .subscribe(onNext: { [unowned self] (_) in
                 self.presentCurrencyListForBaseCurrency(self.baseCurrency!)
             })
-            .disposed(by: bag)
+        .disposed(by: bag)
+        
     }
 }
 
@@ -120,12 +120,24 @@ extension MainViewController{
         displayRates = DisplayCurrenciesContainerRealmModel.defaultContainer(in: realm).orderedDisplayRateList
         let displayRatesObservable = Observable.array(from: displayRates).asDriver(onErrorJustReturn: [])
         
+        baseCurrency = DisplayBaseCurrencyRealmModel.defaultCurrency(in: realm)
+        let baseCurrencyDriver = Observable.from(object: baseCurrency).asDriver(onErrorJustReturn: DisplayBaseCurrencyRealmModel())
+        
         viewModel = MainViewModel()
         let input = MainViewModel.Input(loadAPI: loadAPI.asDriver().debug(),
-                                        displayRates: displayRatesObservable)
+                                        displayRates: displayRatesObservable,
+                                        baseCurrency: baseCurrencyDriver)
         let output = viewModel.transform(input: input)
         output.isLoading.debug("let' see the loading").drive().disposed(by: bag)
         output.displayRatesSection.drive(displayRatesSection).disposed(by: bag)
+        output.shouldDisplayBaseCurrency.drive(onNext: { [weak self] (_) in
+            self?.mainCurrencyDisplayView.cover.isHidden = true
+        })
+        .disposed(by: bag)
+        output.baseCurrency.drive(onNext: { [weak self] (baseCurrency) in
+            self?.mainCurrencyDisplayView.baseCurrency = baseCurrency
+        })
+        .disposed(by: bag)
     }
 }
 

@@ -12,15 +12,27 @@ import RealmSwift
 
 class MainViewModel : ViewModelType{
     
-    
+//    let realm = try! Realm()
+//    baseCurrency = DisplayBaseCurrencyRealmModel.defaultCurrency(in: realm)
+//    Observable.from(object: baseCurrency)
+//    .filter{$0.countryName != ""}
+//    .subscribe(onNext: { [weak self] (baseCurrency) in
+//    self?.mainCurrencyDisplayView.baseCurrency = baseCurrency
+//    })
+//    .disposed(by: bag)
+//
+//    let something = Observable.from(object: baseCurrency)
     struct Input {
         let loadAPI : Driver<Bool>
         let displayRates : Driver<[DisplayCurrencyRealmModel]>
+        let baseCurrency : Driver<DisplayBaseCurrencyRealmModel>
     }
     
     struct Output {
         let isLoading : Driver<Bool>
         let displayRatesSection : Driver<[DisplayCurrenciesAnimatedSectionModel]>
+        let baseCurrency : Driver<DisplayBaseCurrencyRealmModel>
+        let shouldDisplayBaseCurrency : Driver<Bool>
     }
     
     func transform(input: MainViewModel.Input) -> MainViewModel.Output {
@@ -81,13 +93,20 @@ class MainViewModel : ViewModelType{
         .merge()
         
         
-        /// Realm
+        /// Realm for displayRates
         let displayRatesSection = input.displayRates.map { (displayRatesModels) -> [DisplayCurrenciesAnimatedSectionModel] in
             return [DisplayCurrenciesAnimatedSectionModel(header: "section", items: displayRatesModels)]
         }
         
+        
+        ///
+        let baseCurrency = input.baseCurrency.filter{$0.countryName != ""}
+        let shouldDisplayBaseCurrency = baseCurrency.map{_ in return true}
+        
         return Output(isLoading: isLoading,
-                      displayRatesSection: displayRatesSection)
+                      displayRatesSection: displayRatesSection,
+                      baseCurrency: baseCurrency,
+                      shouldDisplayBaseCurrency: shouldDisplayBaseCurrency)
     }
     
 }

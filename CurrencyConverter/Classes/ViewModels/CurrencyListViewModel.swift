@@ -67,6 +67,7 @@ class CurrencyListViewModel : ViewModelType{
         let completedStoringInRealm = input.addDisplayCurrency.map { (model) -> Bool in
             let realm = try! Realm()
             if let _ = realm.object(ofType: DisplayCurrencyRealmModel.self, forPrimaryKey: model.countryFullName){
+                /// the item has already existed
                 return true
             }
             let displayRatesModel = DisplayCurrencyRealmModel(countryName: model.countryFullName, currencyName: model.currencyName)

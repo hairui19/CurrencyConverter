@@ -7,21 +7,40 @@
 //
 
 import UIKit
+import RxSwift
 
 class MainCurrencyDisplayView : UIView{
     
     
     // MARK: - UIs (Elements)
-    private var countryLabel : UILabel = {
-        let label = UILabel()
-        label.font = Fonts.get(.asap_regular, fontSize: 15)
-        return label
+    var countryButton : UIButton = {
+        let button = UIButton(type: .custom)
+        button.titleLabel?.font = Fonts.get(.asap_bold, fontSize: 35)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.textAlignment = .center
+        return button
     }()
     
-    private var valueLabel : UILabel = {
+    var amountButton : UIButton = {
+        let button = UIButton(type: .custom)
+        button.titleLabel?.font = Fonts.get(.asap_bold, fontSize: 30)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.textAlignment = .center
+        return button
+    }()
+    
+    var cover : UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 250, green: 250, blue: 252)
+        return view
+    }()
+    
+    private var coverLabel : UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
-        label.font = Fonts.get(.asap_regular, fontSize: 15)
+        label.font = Fonts.get(.asap_bold, fontSize: 20)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.text = "Tap To \nAdd Base Currency"
         return label
     }()
     
@@ -38,11 +57,14 @@ class MainCurrencyDisplayView : UIView{
             guard let baseCurrency = baseCurrency else{
                 return
             }
-            
-            countryLabel.text = baseCurrency.countryName
-            valueLabel.text = baseCurrency.displayAmount
+            print("the country name is = \(baseCurrency.countryName)")
+            countryButton.setTitle(baseCurrency.countryName, for: .normal)
+            amountButton.setTitle(baseCurrency.displayAmount, for: .normal)
         }
     }
+    
+    // MARK: - Ect
+    var bag = DisposeBag()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -54,7 +76,7 @@ class MainCurrencyDisplayView : UIView{
         super.init(coder: aDecoder)
         customisation()
     }
-
+    
 }
 
 // MARK: - UI
@@ -66,22 +88,25 @@ extension MainCurrencyDisplayView{
     }
     
     private func addSubViews(){
-        addSubview(countryLabel)
-        addSubview(valueLabel)
+        addSubview(countryButton)
+        addSubview(amountButton)
+        addSubview(cover)
+        cover.addSubview(coverLabel)
         addSubview(divider)
     }
     
     private func setContraints(){
-        countryLabel.translatesAutoresizingMaskIntoConstraints = false
-        countryLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
-        countryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        countryLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5, constant: -15).isActive = true
+        countryButton.translatesAutoresizingMaskIntoConstraints = false
+        countryButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        countryButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
+        countryButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -30).isActive = true
+        
         
         /// ValueLabel Constraints
-        valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        valueLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
-        valueLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        valueLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5, constant: -15).isActive = true
+        amountButton.translatesAutoresizingMaskIntoConstraints = false
+        amountButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        amountButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
+        amountButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 30).isActive = true
         
         /// Divider Constraints
         divider.translatesAutoresizingMaskIntoConstraints = false
@@ -89,5 +114,19 @@ extension MainCurrencyDisplayView{
         divider.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         divider.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        
+        /// cover constraints
+        cover.translatesAutoresizingMaskIntoConstraints = false
+        cover.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        cover.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        cover.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        cover.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
+        // coverlabel constraints
+        coverLabel.translatesAutoresizingMaskIntoConstraints = false
+        coverLabel.leadingAnchor.constraint(equalTo: cover.leadingAnchor, constant: 15).isActive = true
+        coverLabel.trailingAnchor.constraint(equalTo: cover.trailingAnchor, constant: -15).isActive = true
+        coverLabel.centerYAnchor.constraint(equalTo: cover.centerYAnchor).isActive = true
     }
 }
