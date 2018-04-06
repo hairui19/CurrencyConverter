@@ -123,7 +123,15 @@ extension MainViewController{
                                         displayRates: displayRatesObservable,
                                         baseCurrency: baseCurrencyDriver)
         let output = viewModel.transform(input: input)
-        output.isLoading.debug("let' see the loading").drive().disposed(by: bag)
+        output.isLoading.drive(onNext: { (isLoading) in
+            if isLoading{
+                WireFrame.showLoadingView()
+            }else{
+                WireFrame.hideLoadingView()
+            }
+        })
+        .disposed(by: bag)
+        
         output.displayRatesSection.drive(displayRatesSection).disposed(by: bag)
         output.shouldDisplayBaseCurrency.drive(onNext: { [weak self] (_) in
             self?.mainCurrencyDisplayView.cover.isHidden = true

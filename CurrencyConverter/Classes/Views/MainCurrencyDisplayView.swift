@@ -57,7 +57,6 @@ class MainCurrencyDisplayView : UIView{
             guard let baseCurrency = baseCurrency else{
                 return
             }
-            print("the country name is = \(baseCurrency.countryName)")
             countryButton.setTitle(baseCurrency.countryName, for: .normal)
             amountButton.setTitle(baseCurrency.displayAmount, for: .normal)
         }
