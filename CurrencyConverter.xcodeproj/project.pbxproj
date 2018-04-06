@@ -70,7 +70,6 @@
 		FEB0DE9520768629009EBF8C /* DisplayBaseCurrencyRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0DE9420768629009EBF8C /* DisplayBaseCurrencyRealmModel.swift */; };
 		FEB0DE9B2076892C009EBF8C /* DisplayCurrencyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0DE9A2076892C009EBF8C /* DisplayCurrencyType.swift */; };
 		FED6709C20745D8D008037E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED6709B20745D8D008037E4 /* AppDelegate.swift */; };
-		FED6709E20745D8D008037E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED6709D20745D8D008037E4 /* ViewController.swift */; };
 		FED670A120745D8D008037E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FED6709F20745D8D008037E4 /* Main.storyboard */; };
 		FED670A320745D8D008037E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FED670A220745D8D008037E4 /* Assets.xcassets */; };
 		FED670A620745D8D008037E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FED670A420745D8D008037E4 /* LaunchScreen.storyboard */; };
@@ -146,7 +145,6 @@
 		FEB0DE9A2076892C009EBF8C /* DisplayCurrencyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayCurrencyType.swift; sourceTree = "<group>"; };
 		FED6709820745D8D008037E4 /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FED6709B20745D8D008037E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FED6709D20745D8D008037E4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FED670A020745D8D008037E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FED670A220745D8D008037E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FED670A520745D8D008037E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -240,7 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				FED6709B20745D8D008037E4 /* AppDelegate.swift */,
-				FED6709D20745D8D008037E4 /* ViewController.swift */,
 				FE929DEA207469020001C8F8 /* MainViewController.swift */,
 				FE9A4CCF2074A4180062971B /* CurrencyListViewController.swift */,
 				FE4C30AA2075B22B00D4E0A5 /* AmountEntryViewController.swift */,
@@ -741,7 +738,6 @@
 				FE4C30A52074F42800D4E0A5 /* LatestRatesRealmModel.swift in Sources */,
 				FE9A4CD62074A5660062971B /* CurrencyListViewModel.swift in Sources */,
 				FE929DFE207474090001C8F8 /* APIServiceEndpoints.swift in Sources */,
-				FED6709E20745D8D008037E4 /* ViewController.swift in Sources */,
 				FE929DF220746C0D0001C8F8 /* ViewControllers.swift in Sources */,
 				FE929DFA207473A60001C8F8 /* APIResult.swift in Sources */,
 				FE9A4CC8207499160062971B /* FileReaderService.swift in Sources */,
