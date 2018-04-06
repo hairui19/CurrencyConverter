@@ -48,11 +48,6 @@ class MainViewController : UIViewController{
         UIBinding()
         setupTableView()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-    }
 }
 
 // MARK: - UIs
@@ -136,6 +131,9 @@ extension MainViewController{
         .disposed(by: bag)
         output.baseCurrency.drive(onNext: { [weak self] (baseCurrency) in
             self?.mainCurrencyDisplayView.baseCurrency = baseCurrency
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
         })
         .disposed(by: bag)
     }

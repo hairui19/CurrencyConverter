@@ -24,6 +24,7 @@ class AmountEntryViewController : UIViewController{
     
     // MARK: - ViewModel
     private var viewModel : AmountEntryViewModel!
+    private let operation = Variable<String?>(nil)
     
     // MARK: - Ect
     private let bag = DisposeBag()
@@ -44,24 +45,7 @@ class AmountEntryViewController : UIViewController{
     }
     
     @IBAction func performOperation(_ sender: UIButton) {
-        let operand = sender.currentTitle!
-        switch operand {
-        case "C":
-            displayLabel.clear()
-        case "⬅︎":
-            displayLabel.delete()
-        case ".":
-            displayLabel.changeToSuperscriptMode()
-        case "1,000",
-             "500",
-             "100",
-             "10",
-             "1"
-             :
-            print("operand is = \(operand)")
-        default:
-            fatalError("Someone unknown operand pressed")
-        }
+        operation.value = sender.currentTitle
     }
 }
 
@@ -108,12 +92,30 @@ extension AmountEntryViewController{
 
         let input = AmountEntryViewModel.Input(
             accumulator: accumulator,
-            convertButton: convertBarButtonItem.rx.tap.asDriver())
+            convertButton: convertBarButtonItem.rx.tap.asDriver(),
+            operand: operation.asDriver().filter{$0 != nil}.map{$0!})
         let output = viewModel.transform(input: input)
 
         output.enableConvertButton.drive(convertBarButtonItem.rx.isEnabled).disposed(by: bag)
         output.convert.drive(onNext: { [weak self] (success) in
             self?.closeDismiss()
+        })
+        .disposed(by: bag)
+        output.isFastOperation.drive(onNext: { [weak self] (_) in
+            self?.closeDismiss()
+        })
+        .disposed(by: bag)
+        output.uiOperation.drive(onNext: { [weak self] (operation) in
+            switch operation{
+            case .clear:
+                self?.displayLabel.clear()
+            case .delete:
+                self?.displayLabel.delete()
+            case .decimal:
+                self?.displayLabel.changeToSuperscriptMode()
+            default:
+                break
+            }
         })
         .disposed(by: bag)
     }

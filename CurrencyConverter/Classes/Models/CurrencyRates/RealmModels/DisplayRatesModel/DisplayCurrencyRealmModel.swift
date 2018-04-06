@@ -31,7 +31,7 @@ class DisplayCurrencyRealmModel : Object, DisplayCurrencyType{
     private var currencyFormatter : NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
-        formatter.maximumFractionDigits = 8
+        formatter.maximumFractionDigits = 5
         return formatter
     }()
     

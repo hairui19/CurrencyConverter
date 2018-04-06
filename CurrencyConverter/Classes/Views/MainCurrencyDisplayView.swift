@@ -97,15 +97,17 @@ extension MainCurrencyDisplayView{
     
     private func setContraints(){
         countryButton.translatesAutoresizingMaskIntoConstraints = false
-        countryButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
-        countryButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
+        countryButton.leadingAnchor.constraint(lessThanOrEqualTo: self.leadingAnchor, constant: 15).isActive = true
+        countryButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -15).isActive = true
+        countryButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         countryButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -30).isActive = true
         
         
         /// ValueLabel Constraints
         amountButton.translatesAutoresizingMaskIntoConstraints = false
-        amountButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
-        amountButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
+        amountButton.leadingAnchor.constraint(lessThanOrEqualTo: self.leadingAnchor, constant: 15).isActive = true
+        amountButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -15).isActive = true
+        amountButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         amountButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 30).isActive = true
         
         /// Divider Constraints
