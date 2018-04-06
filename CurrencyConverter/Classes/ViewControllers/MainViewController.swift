@@ -21,6 +21,7 @@ class MainViewController : UIViewController{
     // MARK: - IBOulets and UIs
     private var plusBarButtonItem : UIBarButtonItem!
     private var editBarButtonItem : UIBarButtonItem!
+    private var refreshBarButtonItem : UIBarButtonItem!
     @IBOutlet weak var mainCurrencyDisplayView: MainCurrencyDisplayView!
     @IBOutlet weak var tableView: UITableView!
     
@@ -57,6 +58,8 @@ extension MainViewController{
     }
     
     private func setupNavigationBarUI(){
+        refreshBarButtonItem = UIBarButtonItem(image: Images.general_refresh_icon.image, style: .plain, target: nil, action: nil)
+        navigationItem.leftBarButtonItem = refreshBarButtonItem
         plusBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
         editBarButtonItem = UIBarButtonItem(withTitle: "Edit", font: Fonts.get(.asap_medium, fontSize: 15))
         navigationItem.rightBarButtonItems = [plusBarButtonItem, editBarButtonItem]
@@ -66,6 +69,12 @@ extension MainViewController{
 // MARK: - UI Binding
 extension MainViewController{
     private func UIBinding(){
+        (refreshBarButtonItem.rx.tap)
+            .subscribe(onNext: { [weak self] (_) in
+                self?.loadAPI.value = true
+            })
+        .disposed(by: bag)
+        
         (plusBarButtonItem.rx.tap)
             .subscribe(onNext: { [weak self] (_) in
                 self?.presentCurrencyList()
