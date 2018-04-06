@@ -53,6 +53,7 @@ class AmountEntryViewController : UIViewController{
 extension AmountEntryViewController{
     private func setupUI(){
         view.backgroundColor = UIColor(red: 230, green: 230, blue: 235)
+        title = "Enter Your Amount"
         setupNavBar()
     }
     

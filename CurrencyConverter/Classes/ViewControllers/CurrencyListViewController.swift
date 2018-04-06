@@ -49,6 +49,7 @@ class CurrencyListViewController : UIViewController{
 // MARK: - UI
 extension CurrencyListViewController{
     private func setupUI(){
+        title = "Choose Your Currency"
         setupNavBarUI()
     }
     

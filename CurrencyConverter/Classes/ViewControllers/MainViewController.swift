@@ -54,6 +54,7 @@ class MainViewController : UIViewController{
 // MARK: - UIs
 extension MainViewController{
     private func setupUI(){
+        title = "HR CC-"
         setupNavigationBarUI()
     }
     
