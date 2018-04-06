@@ -19,4 +19,5 @@ enum APIError{
     case statusCodeInvalid
     case mappingError
     case executeError
+    case networkError
 }

@@ -65,7 +65,7 @@ struct APIServiceImp : APIService{
                     }
                 case .failure(let error):
                     print("error in here = \(error.localizedDescription)")
-                    observer.onNext(APIResult.apiError(APIError.mappingError))
+                    observer.onNext(APIResult.apiError(APIError.networkError))
                     observer.onCompleted()
                 }
             })

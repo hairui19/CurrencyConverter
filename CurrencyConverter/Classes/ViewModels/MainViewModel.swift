@@ -33,6 +33,7 @@ class MainViewModel : ViewModelType{
         let displayRatesSection : Driver<[DisplayCurrenciesAnimatedSectionModel]>
         let baseCurrency : Driver<DisplayBaseCurrencyRealmModel>
         let shouldDisplayBaseCurrency : Driver<Bool>
+        let hasError : Driver<Bool>
     }
     
     func transform(input: MainViewModel.Input) -> MainViewModel.Output {
@@ -56,6 +57,18 @@ class MainViewModel : ViewModelType{
         }
             .filter{$0 != nil}
             .map{$0!}
+        
+        
+        /// API Error
+        let hasError = latestRatesAPIResult.map { (apiresult) -> Bool in
+            switch apiresult{
+            case .apiError:
+                return true
+            default:
+                return false
+            }
+        }
+            .filter{$0}
         
         
         let finishStoringRatesInRealm = currencyRates.map { (currencyModel) -> Bool in
@@ -88,7 +101,8 @@ class MainViewModel : ViewModelType{
         
         let isLoading = Driver.from([
             startLoadingAPI,
-            finishStoringRatesInRealm
+            finishStoringRatesInRealm,
+            hasError.map{!$0}
             ])
         .merge()
         
@@ -106,7 +120,8 @@ class MainViewModel : ViewModelType{
         return Output(isLoading: isLoading,
                       displayRatesSection: displayRatesSection,
                       baseCurrency: baseCurrency,
-                      shouldDisplayBaseCurrency: shouldDisplayBaseCurrency)
+                      shouldDisplayBaseCurrency: shouldDisplayBaseCurrency,
+                      hasError: hasError)
     }
     
 }

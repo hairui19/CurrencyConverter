@@ -144,6 +144,11 @@ extension MainViewController{
             }
         })
         .disposed(by: bag)
+        
+        output.hasError.drive(onNext: { [weak self] (_) in
+            self?.showAlert(title: "Network Error", message: "You may not have the latest rates.", actions: ["Ok"])
+        })
+        .disposed(by: bag)
     }
 }
 
@@ -211,5 +216,6 @@ extension MainViewController : UITableViewDelegate{
         return 60
     }
 }
+
 
 
